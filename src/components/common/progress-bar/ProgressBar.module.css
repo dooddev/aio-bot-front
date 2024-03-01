@@ -1,0 +1,17 @@
+.progress_container{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(9, 1, 25, 0.32);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+
+}
+
+.loading{
+    width: 100px;
+}

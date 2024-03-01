@@ -1,0 +1,20 @@
+
+.button{
+    color: rgba(255, 255, 255, 0.75);
+    outline: none;
+    border-radius: 4px;
+    height: 45px;
+    font-size: 20px;
+    background: linear-gradient(180deg, #643CF0 0%, #331E79 100%);
+    width: 100%;
+}
+
+.error_button{
+    background: linear-gradient(180deg, #F03C5C 0%, #331E79 100%);
+}
+@media (max-width:500px) {
+    .button{
+        height: 40px;
+        font-size: 14px;
+    }
+}
