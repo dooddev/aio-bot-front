@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { enqueueSnackbar } from "notistack";
 import s from "./Auth.module.css";
 import Input from "../common/input/Input";
@@ -42,6 +42,7 @@ const LoginPage = () => {
   const queryParams = new URLSearchParams(location.search);
   const session = queryParams.get("session");
 
+
   const {
     register,
     handleSubmit,
@@ -50,6 +51,9 @@ const LoginPage = () => {
     resolver: yupResolver(schema),
   });
 
+  useEffect(() => {
+    console.log('LOCATION',location)
+  }, [location]);
   const onSubmit = async (data) => {
     if (data) {
       setIsLoading(true);

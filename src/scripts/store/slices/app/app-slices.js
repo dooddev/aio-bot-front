@@ -5,7 +5,8 @@ const appSlice = createSlice({
     initialState: {
         theme:'dark',
         isAuth:null,
-        emailVerify:null
+        emailVerify:null,
+        tempPassword:null
     },
     reducers: {
 
@@ -18,9 +19,12 @@ const appSlice = createSlice({
         setIsAuth:(state,action)=>{
             state.isAuth=action.payload
         },
+        setTempPassword:(state,action)=>{
+            state.tempPassword=action.payload
+        },
     },
 });
 
-export const { setTheme,setEmailVerify,setIsAuth } = appSlice.actions;
+export const { setTheme,setEmailVerify,setIsAuth,setTempPassword } = appSlice.actions;
 
 export default appSlice.reducer;

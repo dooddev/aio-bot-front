@@ -17,7 +17,7 @@ import {
 } from "../../scripts/api/auth-api";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setEmailVerify } from "../../scripts/store/slices/app/app-slices";
+import {setEmailVerify, setTempPassword} from "../../scripts/store/slices/app/app-slices";
 import ProgressBar from "../common/progress-bar/ProgressBar";
 import { GoogleLogin } from "@react-oauth/google";
 export const signupSchema = yup.object().shape({
@@ -77,6 +77,7 @@ const RegistrationPage = () => {
         return;
       }
       dispatch(setEmailVerify(data.email));
+      dispatch(setTempPassword(data.password))
       navigate("/verify");
     }
   };

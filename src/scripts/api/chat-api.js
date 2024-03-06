@@ -82,7 +82,7 @@ export const chatService = apiService.injectEndpoints({
     sendVote:build.mutation({
       query:(data) =>     ({
         method:'GET',
-        url:`chat/message/vote/${data.id}/mode=${data.mode}`,
+        url:`chat/message/vote/${data.id}?mode=${data.mode}`,
       })
     })
   }),

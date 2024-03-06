@@ -9,7 +9,7 @@ import { clearLocalStorage } from "../../scripts/common/helpers/localStorage";
 import { setIsAuth } from "../../scripts/store/slices/app/app-slices";
 import {setMe, setMessages} from "../../scripts/store/slices/chat/chat-slice";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import Cookies from "js-cookie";
 import { useLogoutQuery } from "../../scripts/api/auth-api";
 import { useSendMessageMutation } from "../../scripts/api/chat-api";
@@ -24,6 +24,10 @@ const User = ({ isMenu, user }) => {
   const theme = useSelector(selectTheme);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search);
+  const session = queryParams.get("session");
 
   const handleSettings = () => {
     setIsMenuOpen(false);
@@ -31,23 +35,26 @@ const User = ({ isMenu, user }) => {
   };
 
   useEffect(()=>{
-    console.log('SUCCESS',isSuccess)
+
     if(isSuccess){
       Cookies.remove("refresh-token");
       clearLocalStorage("access-token");
       dispatch(setIsAuth(false));
       dispatch(setMe(null));
       dispatch(setMessages([]))
-      navigate("/login");
+
+      const params = new URLSearchParams(location.search);
+      params.delete('session'); // Remove the session parameter
+
+      navigate({
+        pathname: '/login',
+        search: params.toString() // Apply the modified search query
+      });
     }
   },[isSuccess])
   const handleLogout = () => {
-    console.log(skip)
+
     setSkip(false);
-    console.log(skip)
-    console.log('logout')
-
-
   };
 
   return (

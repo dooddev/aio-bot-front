@@ -6,27 +6,40 @@ import Button from "../common/button/Button";
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup"
-import {useRegistrationConfirmationMutation, useSendCodeMutation} from "../../scripts/api/auth-api";
+import {useLoginMutation, useRegistrationConfirmationMutation, useSendCodeMutation} from "../../scripts/api/auth-api";
 import {useSelector} from "react-redux";
-import {selectEmailVerify} from "../../scripts/store/slices/app/selectors";
+import {selectEmailVerify, selectTempPassword} from "../../scripts/store/slices/app/selectors";
 import ProgressBar from "../common/progress-bar/ProgressBar";
-import {setEmailVerify} from "../../scripts/store/slices/app/app-slices";
-import {useNavigate} from "react-router-dom";
+import {setEmailVerify, setIsAuth} from "../../scripts/store/slices/app/app-slices";
+import {useLocation, useNavigate} from "react-router-dom";
+import {setLocalStorage} from "../../scripts/common/helpers/localStorage";
+import {enqueueSnackbar} from "notistack";
+import {useCookies} from "react-cookie";
+import {useGetLastSessionMutation} from "../../scripts/api/chat-api";
 
 
 const VerifyAccountPage = () => {
 
     const [sendCode,{isLoading}] = useSendCodeMutation();
     const [registrationConfirmation ] = useRegistrationConfirmationMutation();
+    const [login] = useLoginMutation();
+    const [getLastSession] = useGetLastSessionMutation();
+
+    const email=useSelector(selectEmailVerify)
+    const password=useSelector(selectTempPassword)
 
     const [isError,setIsError]=useState()
     const [code,setCode]=useState('')
     const navigate = useNavigate();
+    const [cookies, setCookies] = useCookies(["refresh-token"]);
 
-    const email=useSelector(selectEmailVerify)
+
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+
+    const session = queryParams.get("session");
 
     const onSubmit = async () => {
-        setIsError(false)
             const res=await  sendCode({
                 email:email,
                 pin_code:code
@@ -36,9 +49,41 @@ const VerifyAccountPage = () => {
                 setIsError('The code you entered is incorrect! Please try again or ask for a new verification code.')
                 return
             }
-            navigate('/login');
+        if (email&&password) {
 
-        }
+            let res_login = await login({
+                email:email,
+                password: password,
+            });
+            if (res_login.error) {
+                return;
+            }
+
+            setLocalStorage("access-token", res_login.data.access_token);
+            setCookies("refresh-token", res_login.data.refresh_token);
+
+            if (session) {
+                setIsAuth(true); // Set redux store isAuth: TRUE
+                enqueueSnackbar("User logged in successfully", { variant: "success" });
+                navigate(`/chat?session=${session}`);
+              //  setIsLoading(false);
+                return;
+            }
+
+            const res_last = await getLastSession({
+                email: email,
+            });
+            if (res_last.error) {
+                setIsError(res_last.error.message);
+                return;
+            }
+            const chat_session = res_last.data.session;
+
+            setIsAuth(true);
+            enqueueSnackbar("User logged in successfully", { variant: "success" });
+            navigate(`/chat?session=${chat_session}`);
+
+        }}
 
     const resendCode=async ()=>{
         setIsError(false)

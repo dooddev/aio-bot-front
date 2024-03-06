@@ -37,6 +37,7 @@ const LeftSidebar = () => {
   const [historySession, setHistorySession] = useState([]);
 
   useEffect(() => {
+    console.log('CURRENT SESSION',chat_messages)
     if (chat_messages.length) {
       setCurrentSession({
         id: "1",

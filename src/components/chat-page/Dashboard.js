@@ -100,6 +100,7 @@ const Dashboard = () => {
         const res = await ChatHistoryBySession({
           chat_session: session,
         });
+
         if (res.error) return;
 
         if (res.length == 0) {
@@ -109,6 +110,7 @@ const Dashboard = () => {
                 message: "Hello, I am AIO assistant bot. How can I help you?",
                 sender: "ChatGPT",
                 recipient: me.username,
+
               },
             ])
           );
@@ -126,8 +128,9 @@ const Dashboard = () => {
               sender: "ChatGPT",
               recipient: msg.email,
               id:msg.id,
-              liked:false
+              liked:msg.status
             });
+
             dispatch(addMessages(add_msgs));
           }
         }
