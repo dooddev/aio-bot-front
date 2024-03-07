@@ -30,18 +30,17 @@ const LeftSidebar = () => {
 
   const [current_session, setCurrentSession] = useState({
     id: "1",
-    data: "2024-02-29",
+    data: "2024-03-06",
     header: '',
   });
 
   const [historySession, setHistorySession] = useState([]);
 
   useEffect(() => {
-    console.log('CURRENT SESSION',chat_messages)
     if (chat_messages.length) {
       setCurrentSession({
         id: "1",
-        data: "2024-02-29",
+        data: "2024-03-06",
         header: chat_messages[0].message,
       });
     }
@@ -49,7 +48,7 @@ const LeftSidebar = () => {
 
   useEffect(() => {
     const data = chathistory_sessions;
-    console.log(data);
+
     if (!data) return;
     const ret_data = [];
     let idx = 0;

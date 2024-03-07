@@ -42,14 +42,14 @@ const User = ({ isMenu, user }) => {
       dispatch(setIsAuth(false));
       dispatch(setMe(null));
       dispatch(setMessages([]))
-
       const params = new URLSearchParams(location.search);
       params.delete('session'); // Remove the session parameter
-
-      navigate({
-        pathname: '/login',
-        search: params.toString() // Apply the modified search query
-      });
+      setTimeout(() => {
+        navigate({
+          pathname: '/login',
+          search: ''
+        });
+      }, 0);
     }
   },[isSuccess])
   const handleLogout = () => {
