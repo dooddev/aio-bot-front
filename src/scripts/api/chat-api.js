@@ -6,9 +6,7 @@ export const chatService = apiService.injectEndpoints({
     friends: build.mutation({
       query: (data) => ({ method: "GET", url: `chat/friend_list`, data: data }),
     }),
-    getUser: build.query({
-      query: (id) => ({ method: "GET", url: `user/${id}` }),
-    }),
+
     sendInvitation: build.mutation({
       query: (data) => ({
         method: "POST",
@@ -91,7 +89,7 @@ export const chatService = apiService.injectEndpoints({
 export const {
   useFriendsQuery,
   useAcceptInvitationQuery,
-  useGetUserQuery,
+
   useSendMessageMutation,
   useFriendsMutation,
   useSendInvitationMutation,

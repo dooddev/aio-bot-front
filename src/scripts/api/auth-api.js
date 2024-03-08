@@ -7,6 +7,10 @@ export const authService = apiService
     endpoints: (build) => ({
       me: build.query({
         query: () => ({ method: "GET", url: "auth/me" }),
+
+      }),
+      getUser: build.query({
+        query: (id) => ({ method: "GET", url: `user/${id}` }),
       }),
 
       registration: build.mutation({
@@ -69,6 +73,7 @@ export const authService = apiService
 
 export const {
   useMeQuery,
+  useGetUserQuery,
   useLogoutQuery,
   useRegistrationMutation,
   useLoginMutation,

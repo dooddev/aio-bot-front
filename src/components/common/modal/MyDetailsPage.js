@@ -6,7 +6,7 @@ import {useChangeAvatarMutation, useChangeUserMutation} from "../../../scripts/a
 import PopUp from "../popup/PopUp";
 import ProgressBar from "../progress-bar/ProgressBar";
 
-import {useGetUserQuery} from "../../../scripts/api/chat-api";
+import {useGetUserQuery} from "../../../scripts/api/auth-api";
 import {enqueueSnackbar} from "notistack";
 
 const MyDetailsPage = () => {

@@ -2,19 +2,20 @@ import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 import { useMeQuery } from "../../../scripts/api/auth-api";
 import { useEffect, useState } from "react";
-import { useGetUserQuery } from "../../../scripts/api/chat-api";
+import { useGetUserQuery } from "../../../scripts/api/auth-api";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setMe } from "../../../scripts/store/slices/chat/chat-slice";
 import ProgressBar from "../progress-bar/ProgressBar";
-import { setIsAuth } from "../../../scripts/store/slices/app/app-slices";
+import {fetchMeData, setIsAuth} from "../../../scripts/store/slices/app/app-slices";
 import { selectIsAuth } from "../../../scripts/store/slices/app/selectors";
+import {instance} from "../../../scripts/instance/instance";
 
 function PrivateRoute({ path }) {
-  const [skip, setSkip] = useState(true);
+  //const [skip, setSkip] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-  const { isSuccess, isError, data: auth, refetch } = useMeQuery();
-  const { data: user } = useGetUserQuery(auth?.id, { skip });
+  //const { isSuccess, isLoading:isLoadingMe, isError, data: auth, refetch } = useMeQuery();
+  //const { data: user,refetch:refetchGetUser } = useGetUserQuery(auth?.id, { skip });
   const isAuth = useSelector(selectIsAuth);
 
   const navigate = useNavigate();
@@ -30,48 +31,83 @@ function PrivateRoute({ path }) {
     }
   }, []);
 
-  useEffect(() => {
-    if (isError) {
-      setIsLoading(false);
+  useEffect( ()=>{
+    async function fetchData() {
+      try {
+        const {data}= await instance(`auth/me`, { method: 'GET' })
+
+        if(data){
+          const {data:user}=await instance(`user/${data.id}`, { method: 'GET' })
+          dispatch(setMe(user))
+          dispatch(setIsAuth(true))
+          setIsLoading(false);
+        }
+      }
+      catch (e){
+        setIsLoading(false);
+      }
+
     }
-  }, [isError]);
-
-  useEffect(() => {
-    console.log('CHANGE USER',user)
-    if (user) {
-      dispatch(setMe(user));
-      dispatch(setIsAuth(true));
-      setIsLoading(false);
-    }
-  }, [user]);
-
-  useEffect(() => {
-    console.log("isError", isError);
-    console.log("isSuccess", isSuccess);
-    console.log(auth);
-    if (auth?.id) {
-      setSkip(false);
-    }
-  }, [auth, isError, isSuccess]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      console.log('REFETCH')
-      await refetch({ forceRefetch: true });
-    };
-
     fetchData();
-  }, [path]);
+
+
+  },[])
 
   // useEffect(() => {
-  //   console.log('CHANGEUSER')
-  //   console.log(user)
+  //   if (isError) {
+  //     setIsLoading(false);
+  //   }
+  // }, [isError]);
+
+  // useEffect(() => {
+  //     changeUser()
+  // }, [user]);
+  //
+  //
+  // const changeUser=()=>{
   //   if (user) {
   //     dispatch(setMe(user));
   //     dispatch(setIsAuth(true));
+  //     setIsLoading(false);
   //   }
-  //   setIsLoading(false)
-  // }, [user]);
+  //
+  // }
+  //
+  // useEffect(() => {
+  //   console.log("isError", isError);
+  //   console.log("isSuccess", isSuccess);
+  //   console.log('auth',auth);
+  //   if (auth?.id) {
+  //     console.log('SETSKIP')
+  //     console.log(skip)
+  //     setSkip(false);
+  //   }
+  // }, [auth, isError, isSuccess,isLoadingMe]);
+  //
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     console.log('REFETCH')
+  //     const {isSuccess} =await refetch({ forceRefetch: true });
+  //     console.log(isSuccess, skip)
+  //     if(isSuccess){
+  //       console.log('im going send req')
+  //       try{
+  //         const res=await refetchGetUser()
+  //         console.log(res)
+  //       }
+  //       catch (e) {
+  //         console.log(e)
+  //       }
+  //
+  //
+  //     }
+  //
+  //
+  //   };
+  //
+  //   fetchData();
+  // }, [path]);
+
 
   if (isLoading) {
     return (
