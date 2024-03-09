@@ -123,13 +123,19 @@ const Dashboard = () => {
               email: msg.email,
 
             });
-            add_msgs.push({
-              message: msg.response,
-              sender: "ChatGPT",
-              recipient: msg.email,
-              id:msg.id,
-              liked:msg.status
-            });
+
+
+
+            if(msg.response.length!=0){
+              add_msgs.push({
+                message: msg.response,
+                sender: "ChatGPT",
+                recipient: msg.email,
+                id:msg.id,
+                liked:msg.status
+              });
+            }
+
 
             dispatch(addMessages(add_msgs));
           }
@@ -198,7 +204,7 @@ const Dashboard = () => {
       const responseData = axiosResponse.data;
       console.log(responseData);
       setData(responseData);
-      if (responseData.content != null) {
+      if (responseData.content != null&&responseData.content.length!='') {
         dispatch(
           addMessages([
             {

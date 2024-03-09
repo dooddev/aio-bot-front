@@ -11,9 +11,9 @@ import {enqueueSnackbar} from "notistack";
 
 const MyDetailsPage = () => {
     const me=useSelector(selectMe)
-    const [username, setUsername] = useState(me.username||'');
-    const [email,setEmail]=useState(me.email||'')
-    const [avatar,setAvatar]=useState(me.avatar_url||'')
+    const [username, setUsername] = useState(me?.username||'');
+    const [email,setEmail]=useState(me?.email||'')
+    const [avatar,setAvatar]=useState(me?.avatar_url||'')
     const [isPopup,setIsPopup]=useState(false)
     const [textPopup,setTextPopup]=useState('')
 
@@ -24,7 +24,7 @@ const MyDetailsPage = () => {
 
     const fileInputRef = useRef(null);
     useEffect(()=>{
-        setAvatar(user.avatar_url)
+        setAvatar(user?.avatar_url)
     },[user])
 
     const handleChangeName = async () => {
@@ -104,7 +104,7 @@ const MyDetailsPage = () => {
             <div className={s.container}>
                 <p>Profile Photo (Optional)</p>
                 <div className={s.photo_container}>
-                    {avatar.length!=0?  <img src={avatar} className={s.avatar}/>:
+                    {avatar?.length!=0?  <img src={avatar} className={s.avatar}/>:
                         <span
                         className={s.avatar}
                         style={{

@@ -60,7 +60,7 @@ const User = ({ isMenu, user }) => {
   return (
     <div className={`${s.user_container} ${s[`user_container_${theme}`]}`}>
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        {user.avatar_url ? (
+        {user?.avatar_url ? (
           <img src={user.avatar_url} className={s.img_avatar} />
         ) : (
           <span
