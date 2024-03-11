@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import s from "./Modal.module.css";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {selectMe} from "../../../scripts/store/slices/chat/selectors";
 import {useChangeAvatarMutation, useChangeUserMutation} from "../../../scripts/api/user-api";
 import PopUp from "../popup/PopUp";
@@ -8,6 +8,7 @@ import ProgressBar from "../progress-bar/ProgressBar";
 
 import {useGetUserQuery} from "../../../scripts/api/auth-api";
 import {enqueueSnackbar} from "notistack";
+import {setMe} from "../../../scripts/store/slices/chat/chat-slice";
 
 const MyDetailsPage = () => {
     const me=useSelector(selectMe)
@@ -23,6 +24,7 @@ const MyDetailsPage = () => {
     const [changeAvatar,{isLoading:loadingChangeAvatar}]=useChangeAvatarMutation()
 
     const fileInputRef = useRef(null);
+    const dispatch=useDispatch()
     useEffect(()=>{
         setAvatar(user?.avatar_url)
     },[user])
@@ -38,6 +40,8 @@ const MyDetailsPage = () => {
         }
 
         refetch()
+        dispatch(setMe({...me,username:username}))
+        console.log('ME',me)
         enqueueSnackbar(`Changes have been saved!`, {
             variant: "success",
         });
@@ -68,7 +72,11 @@ const MyDetailsPage = () => {
                 });
                 return
             }
-            refetch()
+            const res=await refetch()
+
+            if(res.data){
+                dispatch(setMe(res.data))
+            }
             enqueueSnackbar(`Changes have been saved!`, {
                 variant: "success",
             });
