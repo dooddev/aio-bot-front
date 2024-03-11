@@ -117,7 +117,7 @@ const MyDetailsPage = () => {
                             justifyContent:"center"
                         }}
                     >
-                         {user.email.charAt(0).toUpperCase()}
+                         {user?.email.charAt(0).toUpperCase()}
                      </span>}
 
 
