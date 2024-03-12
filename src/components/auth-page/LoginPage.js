@@ -101,6 +101,15 @@ const LoginPage = () => {
   const changePage = () => {
     navigate("/");
   };
+  const handleNavigateToRegistration=()=>{
+    if(session){
+      navigate(`/registration?session=${session}`)
+    }
+    else{
+      navigate('/registration')
+    }
+
+  }
 
   return (
     <div className={s.container}>
@@ -161,10 +170,10 @@ const LoginPage = () => {
         <p style={{ color: "rgba(255, 255, 255, 0.75", fontWeight: 700 }}>
           {" "}
           Don’t have an account?
-          <Link to="/registration" style={{ color: "#643CF0" }}>
+          <div onClick={handleNavigateToRegistration} style={{ color: "#643CF0" }}>
             {" "}
             Sign up
-          </Link>
+          </div>
         </p>
         <Link to="/recovery" style={{ color: "#643CF0", fontWeight: 700 }}>
           {" "}

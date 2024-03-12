@@ -43,6 +43,8 @@ const Dashboard = () => {
   const me = useSelector(selectMe);
   const messages = useSelector(selectMessages);
   const friend_list=useSelector(selectFriends)
+  console.log('friend list',friend_list)
+  console.log('messages',messages)
 
   const { socket, isConnected } = useSocket();
   const ref = useRef();
@@ -93,6 +95,7 @@ const Dashboard = () => {
           session: session,
         });
         if (res.error) return;
+        console.log('GET FRIEND LIST',res.data)
         dispatch(setFriends(res.data));
       };
 
@@ -230,6 +233,25 @@ const Dashboard = () => {
     scrollToBottom();
   }, [messages]);
 
+  function getRecipientName(friendList, messageRecipient, currentUser) {
+    if (friendList.length !== 0) {
+      const friend = friendList.find((el) => el?.email === messageRecipient);
+
+      return friend?.username !=null?friend?.username:friend?.email
+    } else {
+      console.log('current user',currentUser)
+      if(currentUser){
+        return currentUser.username !== null ? currentUser?.username : currentUser?.email;
+      }
+      else {
+        return ''
+      }
+
+    }
+  }
+
+
+
   return (
     <div style={{ display: "flex", width: "100%" }}>
       <LeftSidebar />
@@ -254,8 +276,7 @@ const Dashboard = () => {
                       <img src={logo} className={s.logo_avatar} />
                       <p className={`${s[`name_${theme}`]}`}>
                         {" "}
-                        AIOBot to  {
-                        friend_list.length!=0?friend_list.find((el)=>el.email==message.recipient)?.username:(me.username||me.email)}
+                        AIOBot to {getRecipientName(friend_list, message.recipient, me)}
                       </p>
                     </div>
                     {message.liked

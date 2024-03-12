@@ -15,7 +15,7 @@ import {
   useRegistrationConfirmationMutation,
   useRegistrationMutation,
 } from "../../scripts/api/auth-api";
-import { Link, useNavigate } from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {setEmailVerify, setTempPassword} from "../../scripts/store/slices/app/app-slices";
 import ProgressBar from "../common/progress-bar/ProgressBar";
@@ -51,6 +51,9 @@ const RegistrationPage = () => {
   const [isError, setIsError] = useState();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const session = queryParams.get("session");
 
   const {
     register,
@@ -78,7 +81,13 @@ const RegistrationPage = () => {
       }
       dispatch(setEmailVerify(data.email));
       dispatch(setTempPassword(data.password))
-      navigate("/verify");
+      if(session){
+        navigate(`/verify?session=${session}`);
+      }
+      else{
+        navigate("/verify");
+      }
+
     }
   };
   const changePage = () => {

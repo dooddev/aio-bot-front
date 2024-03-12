@@ -58,6 +58,7 @@ const User = ({ isMenu, user }) => {
   };
 
   return (
+      user&&
     <div className={`${s.user_container} ${s[`user_container_${theme}`]}`}>
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         {user?.avatar_url ? (
