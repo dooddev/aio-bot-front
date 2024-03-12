@@ -12,6 +12,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { setMessages } from "../../scripts/store/slices/chat/chat-slice";
 import { useChatSessionsByIdQuery } from "../../scripts/api/chat-api";
 import { setFriends } from "../../scripts/store/slices/friend/friend-slice";
+import { useSocket } from "../../scripts/hooks/useSocket";
 
 const LeftSidebar = () => {
   const theme = useSelector(selectTheme);
@@ -28,10 +29,12 @@ const LeftSidebar = () => {
   const queryParams = new URLSearchParams(location.search);
   const session = queryParams.get("session");
 
+  const { socket, isConnected } = useSocket();
+
   const [current_session, setCurrentSession] = useState({
     id: "1",
     data: "2024-03-06",
-    header: '',
+    header: "",
   });
 
   const [historySession, setHistorySession] = useState([]);
@@ -76,6 +79,11 @@ const LeftSidebar = () => {
     enqueueSnackbar(res.data.message, { variant: "info" });
     dispatch(setMessages([]));
     dispatch(setFriends([]));
+
+    socket.emit("set user session", {
+      email: me.email,
+      session: session,
+    });
 
     refetch(); // get chat history list
     const new_session = res.data.session;
@@ -151,51 +159,61 @@ const LeftSidebar = () => {
       </div>
       <div className={s.line}></div>
       <div className={s.list}>
-        <div className={ `${s.current_session} ${s[`current_session_${theme}`]}`}>
+        <div
+          className={`${s.current_session} ${s[`current_session_${theme}`]}`}
+        >
           <p>{current_session.header}</p>
         </div>
-        {
-          todayArray.length!==0&&
-            <div>
-              <h3 className={`${s.header_history} ${s[`header_history_${theme}`]}`}>Today</h3>
-              {
-                todayArray.map((item) => (
-                    <LeftSidebarItem
-                        key={item.id}
-                        session={item.session}
-                        header={item.header}
-                    />
-                ))}
-            </div>
-        }
+        {todayArray.length !== 0 && (
+          <div>
+            <h3
+              className={`${s.header_history} ${s[`header_history_${theme}`]}`}
+            >
+              Today
+            </h3>
+            {todayArray.map((item) => (
+              <LeftSidebarItem
+                key={item.id}
+                session={item.session}
+                header={item.header}
+              />
+            ))}
+          </div>
+        )}
 
-        {yesterdayArray.length!==0&&
-            <div>
-              <h3 className={ `${s.header_history} ${s[`header_history_${theme}`]}`}>Yesterday</h3>
-              {
-                yesterdayArray.map((item) => (
-                    <LeftSidebarItem
-                        key={item.id}
-                        session={item.session}
-                        header={item.header}
-                    />
-                ))}
-            </div>
-        }
+        {yesterdayArray.length !== 0 && (
+          <div>
+            <h3
+              className={`${s.header_history} ${s[`header_history_${theme}`]}`}
+            >
+              Yesterday
+            </h3>
+            {yesterdayArray.map((item) => (
+              <LeftSidebarItem
+                key={item.id}
+                session={item.session}
+                header={item.header}
+              />
+            ))}
+          </div>
+        )}
 
-        {last5Days.length!==0&&
-            <div>
-              <h3 className={ `${s.header_history} ${s[`header_history_${theme}`]}`}>Last 5 Days</h3>
-              {
-                last5Days.map((item) => (
-                    <LeftSidebarItem
-                        key={item.id}
-                        session={item.session}
-                        header={item.header}
-                    />
-                ))}
-            </div>}
-
+        {last5Days.length !== 0 && (
+          <div>
+            <h3
+              className={`${s.header_history} ${s[`header_history_${theme}`]}`}
+            >
+              Last 5 Days
+            </h3>
+            {last5Days.map((item) => (
+              <LeftSidebarItem
+                key={item.id}
+                session={item.session}
+                header={item.header}
+              />
+            ))}
+          </div>
+        )}
       </div>
       <div className={s.profile}>{me && <User isMenu={true} user={me} />}</div>
     </div>
