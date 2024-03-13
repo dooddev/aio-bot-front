@@ -51,9 +51,6 @@ const LoginPage = () => {
     resolver: yupResolver(schema),
   });
 
-  useEffect(() => {
-    console.log('LOCATION',location)
-  }, [location]);
   const onSubmit = async (data) => {
     if (data) {
       setIsLoading(true);
@@ -75,7 +72,6 @@ const LoginPage = () => {
       if (session) {
         setIsAuth(true); // Set redux store isAuth: TRUE
         enqueueSnackbar("User logged in successfully", { variant: "success" });
-        console.log('LOGIN+++++++++++++++++++++++++++++++++++++++')
         navigate(`/chat?session=${session}`);
         setIsLoading(false);
         return;
@@ -93,7 +89,6 @@ const LoginPage = () => {
 
       setIsAuth(true); // Set redux store isAuth: TRUE
       enqueueSnackbar("User logged in successfully", { variant: "success" });
-      console.log('LOGIN2+++++++++++++++++++++++++++++++')
       navigate(`/chat?session=${chat_session}`);
       setIsLoading(false);
     }

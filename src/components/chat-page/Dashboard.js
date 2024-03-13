@@ -26,25 +26,24 @@ import {
   useSendMessageMutation,
   useCheckChatSessionMutation,
   useGetFriendListBySessionMutation,
-  useChatHistoryBySessionMutation, useSendVoteMutation,
+  useChatHistoryBySessionMutation,
+  useSendVoteMutation,
   // useChatSessionsByIdQuery
 } from "../../scripts/api/chat-api";
-import red_like from '../../assets/img/red_like.svg'
-import white_like from '../../assets/img/white_like.svg'
+import red_like from "../../assets/img/red_like.svg";
+import white_like from "../../assets/img/white_like.svg";
 const Dashboard = () => {
   const [question, setQuestion] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [sendMessage] = useSendMessageMutation();
   const [getFriendListBySession] = useGetFriendListBySessionMutation();
   const [ChatHistoryBySession] = useChatHistoryBySessionMutation();
-  const [sendVote]=useSendVoteMutation()
+  const [sendVote] = useSendVoteMutation();
 
   const theme = useSelector(selectTheme);
   const me = useSelector(selectMe);
   const messages = useSelector(selectMessages);
-  const friend_list=useSelector(selectFriends)
-  console.log('friend list',friend_list)
-  console.log('messages',messages)
+  const friend_list = useSelector(selectFriends);
 
   const { socket, isConnected } = useSocket();
   const ref = useRef();
@@ -56,20 +55,21 @@ const Dashboard = () => {
   const queryParams = new URLSearchParams(location.search);
   const session = queryParams.get("session");
 
-  const handleSendVote=(id)=>{
-
-
-    const res = sendVote({id:id,mode:'up'})
-    if(res.error){
-      return
+  const handleSendVote = (id) => {
+    const res = sendVote({ id: id, mode: "up" });
+    if (res.error) {
+      return;
     }
-    const new_messages =messages.map((message)=>message.id===id?{...message,liked:true}:message)
-    dispatch(setMessages(new_messages))
-
-  }
+    const new_messages = messages.map((message) =>
+      message.id === id ? { ...message, liked: true } : message
+    );
+    dispatch(setMessages(new_messages));
+  };
 
   const handleMessage = (data) => {
     console.log("receiving new message");
+    console.log(data);
+    console.log("receiving end");
     if (data.email === me.email) return;
     dispatch(
       addMessages([
@@ -82,7 +82,7 @@ const Dashboard = () => {
           message: data.response,
           sender: "ChatGPT",
           recipient: data.email,
-          liked:false
+          liked: false,
         },
       ])
     );
@@ -95,7 +95,7 @@ const Dashboard = () => {
           session: session,
         });
         if (res.error) return;
-        console.log('GET FRIEND LIST',res.data)
+        console.log("GET FRIEND LIST", res.data);
         dispatch(setFriends(res.data));
       };
 
@@ -113,7 +113,6 @@ const Dashboard = () => {
                 message: "Hello, I am AIO assistant bot. How can I help you?",
                 sender: "ChatGPT",
                 recipient: me.username,
-
               },
             ])
           );
@@ -124,36 +123,25 @@ const Dashboard = () => {
               message: msg.query,
               sender: "user",
               email: msg.email,
-
             });
 
-
-
-            if(msg.response.length!=0){
+            if (msg.response.length != 0) {
               add_msgs.push({
                 message: msg.response,
                 sender: "ChatGPT",
                 recipient: msg.email,
-                id:msg.id,
-                liked:msg.status
+                id: msg.id,
+                liked: msg.status,
               });
             }
-
 
             dispatch(addMessages(add_msgs));
           }
         }
       };
 
-      // const getChatHistoryList = async () => {
-      //   const res = getChatSessionById();
-      //   if (res.error) return;
-      //   console.log(res.data)
-      // }
-
       getFriendList();
       getPrevHistory();
-      // getChatHistoryList();
 
       socket.emit("set user session", {
         email: me.email,
@@ -195,19 +183,16 @@ const Dashboard = () => {
   };
   async function processMessageToChatGPT(message) {
     const query = new FormData();
-    console.log(message);
     query.append("query", message);
     query.append("session", session);
     query.append("email", me.email);
     try {
       setIsLoading(true);
-      console.log(query);
       const axiosResponse = await sendMessage(query);
       setIsLoading(false);
       const responseData = axiosResponse.data;
-      console.log(responseData);
       setData(responseData);
-      if (responseData.content != null&&responseData.content.length!='') {
+      if (responseData.content != null && responseData.content.length != "") {
         dispatch(
           addMessages([
             {
@@ -237,20 +222,17 @@ const Dashboard = () => {
     if (friendList.length !== 0) {
       const friend = friendList.find((el) => el?.email === messageRecipient);
 
-      return friend?.username !=null?friend?.username:friend?.email
+      return friend?.username != null ? friend?.username : friend?.email;
     } else {
-      console.log('current user',currentUser)
-      if(currentUser){
-        return currentUser.username !== null ? currentUser?.username : currentUser?.email;
+      if (currentUser) {
+        return currentUser.username !== null
+          ? currentUser?.username
+          : currentUser?.email;
+      } else {
+        return "";
       }
-      else {
-        return ''
-      }
-
     }
   }
-
-
 
   return (
     <div style={{ display: "flex", width: "100%" }}>
@@ -271,19 +253,30 @@ const Dashboard = () => {
                       {message.message}
                     </p>
                   </div>
-                  <div style={{ display: "flex", gap: "40px",alignItems:'center' }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "40px",
+                      alignItems: "center",
+                    }}
+                  >
                     <div className={s.logo_container}>
                       <img src={logo} className={s.logo_avatar} />
                       <p className={`${s[`name_${theme}`]}`}>
                         {" "}
-                        AIOBot to {getRecipientName(friend_list, message.recipient, me)}
+                        AIOBot to{" "}
+                        {getRecipientName(friend_list, message.recipient, me)}
                       </p>
                     </div>
-                    {message.liked
-                        ? <img src={red_like} className={s.like} />
-                        :<img src={white_like} className={s.like} onClick={()=>handleSendVote(message.id)}/>
-                    }
-
+                    {message.liked ? (
+                      <img src={red_like} className={s.like} />
+                    ) : (
+                      <img
+                        src={white_like}
+                        className={s.like}
+                        onClick={() => handleSendVote(message.id)}
+                      />
+                    )}
                   </div>
                 </div>
               ) : (
@@ -302,12 +295,13 @@ const Dashboard = () => {
                       </p>
                     </div>
                     <User
-                        user={
-                          friend_list.length!=0?
-                              friend_list.find(
-                                  (friend) => friend.email === message.email
-                              ):me
-                        }
+                      user={
+                        friend_list.length != 0
+                          ? friend_list.find(
+                              (friend) => friend.email === message.email
+                            )
+                          : me
+                      }
                     />
                   </div>
                 </div>

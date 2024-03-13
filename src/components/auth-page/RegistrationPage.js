@@ -70,7 +70,6 @@ const RegistrationPage = () => {
       });
       if (res.error) {
         setIsError(res.error.message);
-        console.log(res);
         return;
       }
       const verify = await registrationConfirmation({
