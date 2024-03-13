@@ -2,7 +2,8 @@ import axios from "axios";
 import { getAccessToken } from "./helpers";
 import { urlSkipAccessToken } from "./constants";
 
-export const BASE_URL = "http://34.70.151.217:5000/v2";
+export const BASE_URL = "https://aiohub.gg/v2";
+
 export const instance = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,

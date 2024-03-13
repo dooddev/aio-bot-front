@@ -13,7 +13,7 @@ export const useSocket = () => {
 
   useEffect(() => {
     if (isAuth) {
-      const socketIo = io("http://34.70.151.217:5000", {
+      const socketIo = io("https://aiohub.gg", {
         withCredentials: true,
       });
 
