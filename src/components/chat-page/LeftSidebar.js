@@ -29,7 +29,7 @@ const LeftSidebar = () => {
   const queryParams = new URLSearchParams(location.search);
   const session = queryParams.get("session");
 
-  const { socket, isConnected } = useSocket();
+  // const { socket, isConnected } = useSocket();
 
   const [current_session, setCurrentSession] = useState({
     id: "1",
@@ -81,13 +81,8 @@ const LeftSidebar = () => {
     dispatch(setFriends([]));
 
     refetch(); // get chat history list
+
     const new_session = res.data.session;
-
-    socket.emit("set user session", {
-      email: me.email,
-      session: new_session,
-    });
-
     navigate(`/chat?session=${new_session}`);
   };
 
