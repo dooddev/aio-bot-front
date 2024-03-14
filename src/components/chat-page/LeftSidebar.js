@@ -29,7 +29,7 @@ const LeftSidebar = () => {
   const queryParams = new URLSearchParams(location.search);
   const session = queryParams.get("session");
 
-  // const { socket, isConnected } = useSocket();
+  const { socket, isConnected } = useSocket();
 
   const [current_session, setCurrentSession] = useState({
     id: "1",
