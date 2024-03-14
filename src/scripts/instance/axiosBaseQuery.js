@@ -24,6 +24,7 @@ const axiosBaseQuery = async ({ url, method, data, params }) => {
             error: {
 
                 message: error.response?.data.message,
+                status:error.response?.status
 
             },
         };

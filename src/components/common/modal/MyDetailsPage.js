@@ -12,19 +12,19 @@ import {setMe} from "../../../scripts/store/slices/chat/chat-slice";
 
 const MyDetailsPage = () => {
     const me=useSelector(selectMe)
+
     const [username, setUsername] = useState(me?.username||'');
     const [email,setEmail]=useState(me?.email||'')
     const [avatar,setAvatar]=useState(me?.avatar_url||'')
-    const [isPopup,setIsPopup]=useState(false)
-    const [textPopup,setTextPopup]=useState('')
 
     const { data: user,refetch,isLoading:loadingGetUser  } = useGetUserQuery(me?.id);
-
     const [changeUser,{isLoading:loadingChangeUser}]=useChangeUserMutation()
     const [changeAvatar,{isLoading:loadingChangeAvatar}]=useChangeAvatarMutation()
 
     const fileInputRef = useRef(null);
     const dispatch=useDispatch()
+
+
     useEffect(()=>{
         setAvatar(user?.avatar_url)
     },[user])
@@ -32,7 +32,6 @@ const MyDetailsPage = () => {
     const handleChangeName = async () => {
         const res =await changeUser({id:me.id,data:{username}})
         if(res.error){
-            //setTextPopup('Something went wring')
             enqueueSnackbar('Something went wrong', {
                 variant: "error",
             });
@@ -41,13 +40,10 @@ const MyDetailsPage = () => {
 
         refetch()
         dispatch(setMe({...me,username:username}))
-        console.log('ME',me)
+
         enqueueSnackbar(`Changes have been saved!`, {
             variant: "success",
         });
-        // setTextPopup('Changes have been saved!')
-        // setIsPopup(true)
-
     }
 
     const handleImageChange = async (e) => {
@@ -59,14 +55,12 @@ const MyDetailsPage = () => {
         if (!file) {
             return;
         }
-
         const formData = new FormData();
         formData.append('avatar', file);
 
         try {
             const result = await changeAvatar({id:me.id, data:formData});
             if(result.error){
-                // setTextPopup('Something went wring')
                 enqueueSnackbar('Something went wring', {
                     variant: "error",
                 });
@@ -76,24 +70,17 @@ const MyDetailsPage = () => {
 
             if(res.data){
                 dispatch(setMe(res.data))
-            }
-            enqueueSnackbar(`Changes have been saved!`, {
-                variant: "success",
-            });
 
-            // const reader = new FileReader();
-            //
-            // reader.onloadend = () => {
-            //     const base64Image = reader.result;
-            //     setAvatar(base64Image);
-            //     setTextPopup('Changes have been saved!');
-            //     setIsPopup(true);
-            // };
-            //
-            // reader.readAsDataURL(file);
+                enqueueSnackbar(`Changes have been saved!`, {
+                    variant: "success",
+                });
+            }
+
 
         } catch (error) {
-            console.error('Error uploading photo:', error);
+            enqueueSnackbar('Something went wring', {
+                variant: "error",
+            });
         }
     }
     return (
@@ -114,17 +101,17 @@ const MyDetailsPage = () => {
                 <div className={s.photo_container}>
                     {avatar?.length!=0?  <img src={avatar} className={s.avatar}/>:
                         <span
-                        className={s.avatar}
-                        style={{
-                            border: "3px solid gray",
-                            fontSize: "19px",
-                            fontWeight: "bold",
-                            color: "white",
-                            display:"flex",
-                            alignItems:"center",
-                            justifyContent:"center"
-                        }}
-                    >
+                            className={s.avatar}
+                            style={{
+                                border: "3px solid gray",
+                                fontSize: "19px",
+                                fontWeight: "bold",
+                                color: "white",
+                                display:"flex",
+                                alignItems:"center",
+                                justifyContent:"center"
+                            }}
+                        >
                          {user?.email.charAt(0).toUpperCase()}
                      </span>}
 
