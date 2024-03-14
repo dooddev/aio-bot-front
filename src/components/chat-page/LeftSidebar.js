@@ -83,6 +83,12 @@ const LeftSidebar = () => {
     refetch(); // get chat history list
 
     const new_session = res.data.session;
+
+    socket.emit("set user session", {
+      email: me.email,
+      session: session,
+    });
+
     navigate(`/chat?session=${new_session}`);
   };
 
