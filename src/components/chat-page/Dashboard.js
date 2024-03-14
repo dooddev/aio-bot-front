@@ -55,6 +55,23 @@ const Dashboard = () => {
   const queryParams = new URLSearchParams(location.search);
   const session = queryParams.get("session");
 
+
+  useEffect(()=>{
+
+    const newList=friend_list.map((friend)=>friend.email===me.email?{...friend,username:me.username}:friend)
+    dispatch(setFriends(newList))
+    console.log('CHANGE NAME')
+
+  },[me.username])
+  useEffect(()=>{
+
+    const newList=friend_list.map((friend)=>friend.email===me.email?{...friend,avatar_url:me.avatar_url}:friend)
+    dispatch(setFriends(newList))
+    console.log('CHANGE AVATAR')
+
+  },[me.avatar_url])
+
+
   const handleSendVote = (id) => {
     const res = sendVote({ id: id, mode: "up" });
     if (res.error) {

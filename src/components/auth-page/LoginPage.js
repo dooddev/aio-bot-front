@@ -59,7 +59,12 @@ const LoginPage = () => {
         password: data.password,
       });
       if (res.error) {
-        setIsError(res.error.message);
+        console.log(res.error)
+        if (res.error.status === 401) {
+          setIsError('Wrong password');
+        } else {
+          setIsError(res.error.message);
+        }
         setIsLoading(false);
         return;
       }
