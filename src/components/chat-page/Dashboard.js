@@ -19,9 +19,9 @@ import {
 import { selectMessages } from "../../scripts/store/slices/chat/selectors";
 import {
   selectIsAuth,
+  selectSocketStatus,
   selectTheme,
 } from "../../scripts/store/slices/app/selectors";
-import { useSocket } from "../../scripts/hooks/useSocket";
 import {
   useSendMessageMutation,
   useCheckChatSessionMutation,
@@ -32,6 +32,8 @@ import {
 } from "../../scripts/api/chat-api";
 import red_like from "../../assets/img/red_like.svg";
 import white_like from "../../assets/img/white_like.svg";
+import { ContextSocket } from "../../scripts/context/SocketContext";
+
 const Dashboard = () => {
   const [question, setQuestion] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -44,8 +46,9 @@ const Dashboard = () => {
   const me = useSelector(selectMe);
   const messages = useSelector(selectMessages);
   const friend_list = useSelector(selectFriends);
+  // const isSocketConnected = useSelector(selectSocketStatus);
 
-  const { socket, isConnected } = useSocket();
+  const socket = useContext(ContextSocket);
   const ref = useRef();
   const { data, setData } = useContext(DataContext);
 
@@ -55,22 +58,22 @@ const Dashboard = () => {
   const queryParams = new URLSearchParams(location.search);
   const session = queryParams.get("session");
 
-
-  useEffect(()=>{
-
-    const newList=friend_list.map((friend)=>friend.email===me.email?{...friend,username:me.username}:friend)
-    dispatch(setFriends(newList))
-    console.log('CHANGE NAME')
-
-  },[me.username])
-  useEffect(()=>{
-
-    const newList=friend_list.map((friend)=>friend.email===me.email?{...friend,avatar_url:me.avatar_url}:friend)
-    dispatch(setFriends(newList))
-    console.log('CHANGE AVATAR')
-
-  },[me.avatar_url])
-
+  useEffect(() => {
+    const newList = friend_list.map((friend) =>
+      friend.email === me.email ? { ...friend, username: me.username } : friend
+    );
+    dispatch(setFriends(newList));
+    console.log("CHANGE NAME");
+  }, [me.username]);
+  useEffect(() => {
+    const newList = friend_list.map((friend) =>
+      friend.email === me.email
+        ? { ...friend, avatar_url: me.avatar_url }
+        : friend
+    );
+    dispatch(setFriends(newList));
+    console.log("CHANGE AVATAR");
+  }, [me.avatar_url]);
 
   const handleSendVote = (id) => {
     const res = sendVote({ id: id, mode: "up" });
@@ -106,13 +109,15 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    if (isConnected) {
+    if (socket && socket.connected) {
+      console.log("inside in socket");
+      console.log(socket);
+      console.log("finish chekcing");
       const getFriendList = async () => {
         const res = await getFriendListBySession({
           session: session,
         });
         if (res.error) return;
-        console.log("GET FRIEND LIST", res.data);
         dispatch(setFriends(res.data));
       };
 
@@ -160,13 +165,17 @@ const Dashboard = () => {
       getFriendList();
       getPrevHistory();
 
+      console.log(
+        "@@@@@@@@@@@@@@ before sending set user session @@@@@@@@@@@@@@@@"
+      );
+
       socket.emit("set user session", {
         email: me.email,
         session: session,
       });
       socket.on("new chatbot message", handleMessage);
     }
-  }, [isConnected]);
+  }, [socket]);
 
   const [checkChatSession] = useCheckChatSessionMutation();
 

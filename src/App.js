@@ -25,6 +25,7 @@ import InformPage from "./components/auth-page/InformPage";
 import PrivateRoute from "./components/common/auth-redirect/PrivateRout";
 
 import AcceptInvitation from "./components/chat-page/AcceptInvitation";
+import { ContextSocketProvider } from "./scripts/context/SocketContext";
 export const DataContext = createContext();
 
 let socket;
@@ -62,7 +63,14 @@ function App() {
             <Route path="/registration" element={<RegistrationPage />} />
             {/* </Route> */}
             <Route path={"/chat"} element={<PrivateRoute path={"chat"} />}>
-              <Route path="/chat" element={<Dashboard />} />
+              <Route
+                path="/chat"
+                element={
+                  <ContextSocketProvider>
+                    <Dashboard />
+                  </ContextSocketProvider>
+                }
+              />
             </Route>
             <Route path="/train" element={<Train />} />
             <Route path="/verify" element={<VerifyAccountPage />} />

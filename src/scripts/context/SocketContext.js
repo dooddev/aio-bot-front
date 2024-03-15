@@ -1,15 +1,18 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState, createContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { enqueueSnackbar } from "notistack";
 import io from "socket.io-client";
 
+import { setSocketConnected } from "../store/slices/app/app-slices";
 import { selectIsAuth } from "../../scripts/store/slices/app/selectors";
 
-export const useSocket = () => {
+const Context = createContext({});
+
+export const ContextSocketProvider = ({ children }) => {
   const isAuth = useSelector(selectIsAuth);
+  const dispatch = useDispatch();
 
   const [socket, setSocket] = useState(null);
-  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     if (isAuth) {
@@ -18,20 +21,21 @@ export const useSocket = () => {
       });
 
       socketIo.on("connect", () => {
-        setIsConnected(true);
+        console.log("socket connected");
+        dispatch(setSocketConnected(true));
+        setSocket(socketIo);
+        console.log("socketIO is set to socket variable");
         enqueueSnackbar("Connected to socket server", { variant: "success" });
       });
 
       // Listen for disconnect event
       socketIo.on("disconnect", () => {
-        setIsConnected(false);
+        dispatch(setSocketConnected(false));
+        setSocket(null);
         enqueueSnackbar("Disconnected from socket server", {
           variant: "error",
         });
       });
-
-      // Update socket state
-      setSocket(socketIo);
 
       // Cleanup on unmount
       return () => {
@@ -40,5 +44,7 @@ export const useSocket = () => {
     }
   }, [isAuth]);
 
-  return { socket, isConnected };
+  return <Context.Provider value={socket}>{children}</Context.Provider>;
 };
+
+export const ContextSocket = Context;

@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useContext, useMemo, useState, useEffect } from "react";
 import logo from "../../assets/img/logo.png";
 import s from "./Chat.module.css";
 import User from "./User";
@@ -12,7 +12,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { setMessages } from "../../scripts/store/slices/chat/chat-slice";
 import { useChatSessionsByIdQuery } from "../../scripts/api/chat-api";
 import { setFriends } from "../../scripts/store/slices/friend/friend-slice";
-import { useSocket } from "../../scripts/hooks/useSocket";
+import {
+  ContextSocketProvider,
+  ContextSocket,
+} from "../../scripts/context/SocketContext";
 
 const LeftSidebar = () => {
   const theme = useSelector(selectTheme);
@@ -29,7 +32,7 @@ const LeftSidebar = () => {
   const queryParams = new URLSearchParams(location.search);
   const session = queryParams.get("session");
 
-  const { socket, isConnected } = useSocket();
+  const socket = useContext(ContextSocket);
 
   const [current_session, setCurrentSession] = useState({
     id: "1",
@@ -83,7 +86,7 @@ const LeftSidebar = () => {
     refetch(); // get chat history list
 
     const new_session = res.data.session;
-    
+
     socket.emit("set user session", {
       email: me.email,
       session: new_session,

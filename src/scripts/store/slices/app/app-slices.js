@@ -1,54 +1,58 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import {instance} from "../../../instance/instance";
-
-
+import { instance } from "../../../instance/instance";
 
 // Создание createAsyncThunk
 export const fetchMeData = createAsyncThunk(
-    'appReducer/fetchUserData',
-    async (id, thunkAPI) => {
-        try {
-            const userData = await instance(`auth/me`, { method: 'GET' });
-            return userData;
-        } catch (error) {
-            return thunkAPI.rejectWithValue(error.message);
-        }
+  "appReducer/fetchUserData",
+  async (id, thunkAPI) => {
+    try {
+      const userData = await instance(`auth/me`, { method: "GET" });
+      return userData;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
+  }
 );
 
 const appSlice = createSlice({
-    name: 'appReducer',
-    initialState: {
-        theme:'dark',
-        loading:null,
-        isAuth:false,
-        emailVerify:null,
-        tempPassword:null
+  name: "appReducer",
+  initialState: {
+    theme: "dark",
+    loading: null,
+    isAuth: false,
+    emailVerify: null,
+    tempPassword: null,
+    socketConnected: false,
+  },
+  reducers: {
+    setTheme: (state, action) => {
+      state.theme = action.payload;
     },
-    reducers: {
+    setEmailVerify: (state, action) => {
+      state.emailVerify = action.payload;
+    },
+    setIsAuth: (state, action) => {
+      state.isAuth = action.payload;
+    },
+    setTempPassword: (state, action) => {
+      state.tempPassword = action.payload;
+    },
+    setSocketConnected: (state, action) => {
+      state.socketConnected = action.payload;
+    },
+  },
+});
 
-        setTheme: (state, action) => {
-            state.theme = action.payload;
-        },
-        setEmailVerify:(state,action)=>{
-            state.emailVerify=action.payload
-        },
-        setIsAuth:(state,action)=>{
-            state.isAuth=action.payload
-        },
-        setTempPassword:(state,action)=>{
-            state.tempPassword=action.payload
-        }
-    }}
-
-);
-
-export const { setTheme,setEmailVerify,setIsAuth,setTempPassword } = appSlice.actions;
+export const {
+  setTheme,
+  setEmailVerify,
+  setIsAuth,
+  setTempPassword,
+  setSocketConnected,
+} = appSlice.actions;
 
 export default appSlice.reducer;
-
-
 
 // import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 // import axios from "axios";
