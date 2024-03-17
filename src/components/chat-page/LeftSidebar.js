@@ -113,7 +113,7 @@ const LeftSidebar = () => {
   const groupHistoryByTime = () => {
     const today = new Date();
     const yesterday = new Date(today.getTime() - 1000 * 3600 * 24);
-    const fiveDaysAgo = new Date(today.getTime() - 1000 * 3600 * 24 * 5);
+    // const fiveDaysAgo = new Date(today.getTime() - 1000 * 3600 * 24 * 5);
 
     const todayArray = [];
     const yesterdayArray = [];
@@ -124,7 +124,7 @@ const LeftSidebar = () => {
         todayArray.push(item);
       } else if (compareDates(new Date(item.date), yesterday)) {
         yesterdayArray.push(item);
-      } else if (compareDates(new Date(item.date), fiveDaysAgo)) {
+      } else {
         last5Days.push(item);
       }
     });
