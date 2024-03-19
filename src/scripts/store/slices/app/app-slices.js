@@ -24,7 +24,8 @@ const appSlice = createSlice({
         loading:null,
         isAuth:false,
         emailVerify:null,
-        tempPassword:null
+        tempPassword:null,
+        page:null
     },
     reducers: {
 
@@ -39,12 +40,15 @@ const appSlice = createSlice({
         },
         setTempPassword:(state,action)=>{
             state.tempPassword=action.payload
-        }
+        },
+        setPage:(state,action)=>{
+            state.page=action.payload
+        },
     }}
 
 );
 
-export const { setTheme,setEmailVerify,setIsAuth,setTempPassword } = appSlice.actions;
+export const { setTheme,setPage,setEmailVerify,setIsAuth,setTempPassword } = appSlice.actions;
 
 export default appSlice.reducer;
 

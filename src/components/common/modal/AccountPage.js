@@ -56,7 +56,7 @@ const AccountPage = () => {
         <div>
             <div className={s.account_created}>
                 {/*<div>*/}
-                <p style={{fontSize:30}}>{me.username||me.email}</p>
+                <p className={s.name}>{me.username||me.email}</p>
                 {/*<p>Connected accounts:</p>*/}
                 {/*</div>*/}
                 {me.created_at&&
@@ -67,16 +67,16 @@ const AccountPage = () => {
 
             </div>
             <div className={s.account_container}>
-                <p style={{fontSize:20}}>Security</p>
+                <p  className={s.header_text}>Security</p>
                 <div className={s.flex_container}>
-                    <p>Log out of all sessions except for this current browser</p>
+                    <p  className={s.text}>Log out of all sessions except for this current browser</p>
                     <button className={s.btn}   onClick={() => handleLogout()}> Log out </button>
                 </div>
             </div>
             <div  className={s.account_container}>
-                <p  style={{fontSize:20}}>Delete account</p>
+                <p   className={s.header_text}>Delete account</p>
                 <div className={s.flex_container} >
-                    <p>Delete your account and remove all personal data</p>
+                    <p  className={s.text}>Delete your account and remove all personal data</p>
                     <button className={s.btn} onClick={()=>confirmDialog()}> Delete</button>
                 </div>
             </div>

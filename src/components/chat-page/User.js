@@ -65,13 +65,7 @@ const User = ({ isMenu, user }) => {
           <img src={user.avatar_url} className={s.img_avatar} />
         ) : (
           <span
-            className={s.img_avatar}
-            style={{
-              border: "3px solid gray",
-              fontSize: "19px",
-              fontWeight: "bold",
-              color: "white",
-            }}
+            className={`${s.img_avatar} ${s.empty_avatar}`}
           >
             {user.email.charAt(0).toUpperCase()}
           </span>

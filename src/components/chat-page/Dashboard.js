@@ -1,7 +1,5 @@
-import React, { useContext, useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { DataContext } from "../../App";
-import { environment } from "../../environment";
 import s from "./Chat.module.css";
 import LeftSidebar from "./LeftSidebar";
 import logo from "../../assets/img/logo.png";
@@ -18,7 +16,7 @@ import {
 } from "../../scripts/store/slices/chat/chat-slice";
 import { selectMessages } from "../../scripts/store/slices/chat/selectors";
 import {
-  selectIsAuth,
+  selectPage,
   selectTheme,
 } from "../../scripts/store/slices/app/selectors";
 import { useSocket } from "../../scripts/hooks/useSocket";
@@ -28,13 +26,16 @@ import {
   useGetFriendListBySessionMutation,
   useChatHistoryBySessionMutation,
   useSendVoteMutation,
-  // useChatSessionsByIdQuery
 } from "../../scripts/api/chat-api";
 import red_like from "../../assets/img/red_like.svg";
 import white_like from "../../assets/img/white_like.svg";
+import SettingsModal from "../common/modal/SettingsModal";
+import BottomNavBar from "../common/bottom-nav/BottomNavBar";
+import {setPage} from "../../scripts/store/slices/app/app-slices";
 const Dashboard = () => {
   const [question, setQuestion] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
   const [sendMessage] = useSendMessageMutation();
   const [getFriendListBySession] = useGetFriendListBySessionMutation();
   const [ChatHistoryBySession] = useChatHistoryBySessionMutation();
@@ -44,10 +45,10 @@ const Dashboard = () => {
   const me = useSelector(selectMe);
   const messages = useSelector(selectMessages);
   const friend_list = useSelector(selectFriends);
+  const page=useSelector(selectPage)
 
   const { socket, isConnected } = useSocket();
   const ref = useRef();
-  const { data, setData } = useContext(DataContext);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -56,18 +57,16 @@ const Dashboard = () => {
   const session = queryParams.get("session");
 
 
-  useEffect(()=>{
 
+
+  useEffect(()=>{
     const newList=friend_list.map((friend)=>friend.email===me.email?{...friend,username:me.username}:friend)
     dispatch(setFriends(newList))
-    console.log('CHANGE NAME')
 
   },[me.username])
   useEffect(()=>{
-
     const newList=friend_list.map((friend)=>friend.email===me.email?{...friend,avatar_url:me.avatar_url}:friend)
     dispatch(setFriends(newList))
-    console.log('CHANGE AVATAR')
 
   },[me.avatar_url])
 
@@ -84,9 +83,6 @@ const Dashboard = () => {
   };
 
   const handleMessage = (data) => {
-    console.log("receiving new message");
-    console.log(data);
-    console.log("receiving end");
     if (data.email === me.email) return;
     dispatch(
       addMessages([
@@ -208,7 +204,6 @@ const Dashboard = () => {
       const axiosResponse = await sendMessage(query);
       setIsLoading(false);
       const responseData = axiosResponse.data;
-      setData(responseData);
       if (responseData.content != null && responseData.content.length != "") {
         dispatch(
           addMessages([
@@ -252,11 +247,10 @@ const Dashboard = () => {
   }
 
   return (
-    <div style={{ display: "flex", width: "100%" }}>
-      <LeftSidebar />
-
+    <div className={s.dashboard}>
+      <LeftSidebar/>
       <div className={`${s.container} ${s[`container_${theme}`]}`}>
-        <p className={`${s.text}  ${s.bold_text}   ${s[`text_${theme}`]}`}>
+        <p className={` ${s.bold_text}   ${s[`text_${theme}`]}`}>
           AIOChat Bot 1.0
         </p>
 
@@ -354,12 +348,18 @@ const Dashboard = () => {
             />
           </div>
         </div>
-        <p className={`${s.text} ${s[`text_${theme}`]}`}>
+        <p className={`${s.text} ${s.hide} ${s[`text_${theme}`]}`}>
           We are constantly training our AI to provide you with the best
           results. Please be patient.
         </p>
+
+       <BottomNavBar/>
       </div>
+
       <RightSidebar />
+      <SettingsModal
+          isOpen={page==='settings'}
+          setIsOpen={(value) => dispatch(setPage(value))}/>
     </div>
   );
 };

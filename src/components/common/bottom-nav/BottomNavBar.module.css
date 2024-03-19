@@ -1,0 +1,24 @@
+
+.nav{
+    display: none;
+    background: #0a051f;
+    height: 50px;
+    width: 100%;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 0;
+    z-index: 1;
+    align-items: center;
+    padding: 0px 20px;
+
+}
+.nav_item{
+    cursor: pointer;
+}
+
+
+@media (max-width:1000px) {
+    .nav{
+        display: flex;
+
+    }}

@@ -8,6 +8,14 @@
   justify-content: center;
   background-position: center calc(100% - -150px);
 }
+
+.container_hidden{
+  display: none;
+}
+.dashboard{
+  display: flex;
+  width: 100%;
+}
 .container_light {
   background: rgba(255, 255, 255, 0.93);
 }
@@ -31,6 +39,7 @@
   gap: 10px;
   align-items: center;
   margin-top: 15px;
+  margin-bottom: 15px;
 }
 .name_dark {
   color: white;
@@ -62,16 +71,7 @@
 .container_sidebar_light {
   background: #e7ebf2;
 }
-.container_theme {
-  display: flex;
-  gap: 20px;
 
-  height: 80px;
-}
-.container_theme img {
-  cursor: pointer;
-  width: 30px;
-}
 .sidebar_btn {
   box-shadow: 0px 0px 14px 0px #643cf0 inset;
   padding: 5px 15px;
@@ -116,8 +116,16 @@
   width: 100%;
   overflow-y: auto; /* Добавляет вертикальный скроллбар при необходимости */
 
+}
 
+.friends_list{
 
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+
+;
 }
 .list::-webkit-scrollbar {
   width: 12px;
@@ -191,7 +199,7 @@
   align-items: center;
   padding: 20px;
   box-shadow: 0px 2px 32px 0px rgba(100, 60, 240, 0.15) inset;
-  font-weight: 600;
+  font-weight: 300;
 }
 .message_light {
   border-radius: 10px;
@@ -202,7 +210,7 @@
   align-items: center;
   padding: 20px;
   box-shadow: 0px 2px 32px 0px rgba(100, 60, 240, 0.15) inset;
-  font-weight: 600;
+  font-weight: 300;
 }
 .my_message {
   background: linear-gradient(173deg, #f03c5c, #a963da00);
@@ -229,6 +237,7 @@
   color: rgba(255, 255, 255, 0.5);
 }
 .bold_text {
+  color: rgba(255, 255, 255, 0.5);
   font-weight: 400;
 }
 .user_container {
@@ -238,7 +247,7 @@
   border-radius: 18px;
   align-items: center;
   justify-content: space-between;
-  width: 200px;
+  width: 180px;
   height: 50px;
 }
 
@@ -258,7 +267,15 @@
   border-radius: 10px;
   object-fit: cover;
 }
-
+.empty_avatar{
+  border: 3px solid gray;
+  font-size:19px;
+  font-weight: bold;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content:center;
+}
 .name {
   white-space: nowrap;
   overflow: hidden;
@@ -311,7 +328,6 @@
 .invite_friends {
   position: relative;
   right: 380px;
-  background: #ff6666;
   top: -50px;
 }
 .input_invite {
@@ -428,4 +444,114 @@
 .item_history:hover {
   background-color: rgba(100, 60, 240, 0.5);
   border-radius: 5px;
+}
+
+
+@media (max-width:1000px) {
+  .container_sidebar{
+    display: none;
+  }
+  .container_theme{
+    display: none;
+  }
+
+  .invite_friends{
+    position: relative;
+    right: 147px;
+    top: 0px;
+    height: 60px
+
+  }
+  .container{
+    /*justify-content: space-between;*/
+    /*padding-bottom: 72px;*/
+
+  }
+    .hide{
+      display: none;
+    }
+  .leftside_full_page{
+    display: flex !important;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+
+  }
+
+  .righrside_full_page{
+    display: flex !important;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .profile {
+    display: none;
+  }
+
+
+
+
+}
+@media (max-width:700px) {
+  .border{
+
+    width: 100%;
+    margin: 0 20px;
+  }
+
+
+  .message_dark{
+    font-size: 12px;
+    padding: 10px;
+  }
+  .message_light{
+    font-size: 12px;
+    padding: 10px;
+  }
+  .name_dark{
+    font-size: 12px;
+  }
+  .name_light{
+    font-size: 12px;
+  }
+
+  .logo_avatar {
+    width: 30px;
+    border-radius: 50%;
+  }
+  .like {
+    width: 15px;
+    height: 15px;}
+
+  .name {
+    font-size: 12px;
+  }
+
+  .user_container {
+    height: 40px;
+    border-radius: 10px;
+  }
+
+  .img_avatar {
+    width: 25px;
+    height: 25px;
+    border-radius: 8px;
+
+  }
+  .empty_avatar{
+    font-size: 12px;
+    border: 1px solid gray;
+  }
+  .input{
+    font-size: 12px;
+  }
+
+
 }

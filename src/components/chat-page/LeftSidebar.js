@@ -3,7 +3,7 @@ import logo from "../../assets/img/logo.png";
 import s from "./Chat.module.css";
 import User from "./User";
 import { useDispatch, useSelector } from "react-redux";
-import { selectTheme } from "../../scripts/store/slices/app/selectors";
+import {selectPage, selectTheme} from "../../scripts/store/slices/app/selectors";
 import { selectMe } from "../../scripts/store/slices/chat/selectors";
 import { selectMessages } from "../../scripts/store/slices/chat/selectors";
 import { useCreateNewSessionMutation } from "../../scripts/api/chat-api";
@@ -13,11 +13,14 @@ import { setMessages } from "../../scripts/store/slices/chat/chat-slice";
 import { useChatSessionsByIdQuery } from "../../scripts/api/chat-api";
 import { setFriends } from "../../scripts/store/slices/friend/friend-slice";
 import { useSocket } from "../../scripts/hooks/useSocket";
+import {setPage} from "../../scripts/store/slices/app/app-slices";
 
 const LeftSidebar = () => {
   const theme = useSelector(selectTheme);
   const me = useSelector(selectMe);
   const chat_messages = useSelector(selectMessages);
+  const page=useSelector(selectPage)
+
   const navigate = useNavigate();
   const [createNewSession] = useCreateNewSessionMutation();
   const { data: chathistory_sessions, refetch } = useChatSessionsByIdQuery({
@@ -43,7 +46,7 @@ const LeftSidebar = () => {
     if (chat_messages.length) {
       setCurrentSession({
         id: "1",
-        data: "2024-03-06",
+        data: "2024-03-18",
         header: chat_messages[0].message,
       });
     }
@@ -83,6 +86,12 @@ const LeftSidebar = () => {
     refetch(); // get chat history list
 
     const new_session = res.data.session;
+    setCurrentSession({
+      id: "1",
+      data: "2024-03-18",
+      header: "",
+    })
+    dispatch(setPage('chat'))
     navigate(`/chat?session=${new_session}`);
   };
 
@@ -102,6 +111,8 @@ const LeftSidebar = () => {
   }
 
   const groupHistoryByTime = () => {
+    console.log('sess',historySession)
+
     const today = new Date();
     const yesterday = new Date(today.getTime() - 1000 * 3600 * 24);
     const fiveDaysAgo = new Date(today.getTime() - 1000 * 3600 * 24 * 5);
@@ -118,6 +129,9 @@ const LeftSidebar = () => {
       } else if (compareDates(new Date(item.date), fiveDaysAgo)) {
         last5Days.push(item);
       }
+      else {//fix
+        last5Days.push(item)
+      }
     });
 
     console.log(todayArray, yesterdayArray, last5Days);
@@ -126,6 +140,7 @@ const LeftSidebar = () => {
   };
 
   const { todayArray, yesterdayArray, last5Days } = groupHistoryByTime();
+  console.log(page)
 
   const LeftSidebarItem = ({ session, header }) => {
     const handleSidebarItemClick = (session) => {
@@ -144,7 +159,7 @@ const LeftSidebar = () => {
 
   return (
     <div
-      className={`${s.container_sidebar} ${s[`container_sidebar_${theme}`]}`}
+      className={`${s.container_sidebar} ${s[`container_sidebar_${theme}`]} ${page==='history' ? s.leftside_full_page : ''}`}
     >
       <img src={logo} className={s.logo} />
       <div

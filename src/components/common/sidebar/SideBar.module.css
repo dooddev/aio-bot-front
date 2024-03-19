@@ -45,3 +45,53 @@
                 /* нижняя левая */ 0% 20% /* нижняя левая */
     );
 }
+
+.menu{
+    display: none;
+    width: 0;
+    transition: width 0.3s ease;
+}
+.open{
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+.close_btn{
+    display: none;
+}
+
+
+@media (max-width:800px) {
+    .menu{
+        display: flex;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background:#1a1732;
+        border-radius: 50px;
+        width: 40px;
+        height: 40px;
+        align-items: center;
+        justify-content: center
+    ;
+    }
+
+    .sidebar{
+        display: none;
+        background:#1a1732;
+        padding: 15px;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 50%;
+
+    }
+    .close_btn_active{
+        display: flex;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+
+    }
+
+}

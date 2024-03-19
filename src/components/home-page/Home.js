@@ -1,12 +1,9 @@
 import React from "react";
-
 import logo from "../../assets/img/logo.png";
 import Button from "../common/button/Button";
 import s from "../auth-page/Auth.module.css";
 import SideBar from "../common/sidebar/SideBar";
 import { useNavigate } from "react-router-dom";
-import { useMeQuery } from "../../scripts/api/auth-api";
-import ProgressBar from "../common/progress-bar/ProgressBar";
 import { useSelector } from "react-redux";
 import { selectIsAuth } from "../../scripts/store/slices/app/selectors";
 
