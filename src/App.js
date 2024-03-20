@@ -23,7 +23,7 @@ import { useDispatch } from "react-redux";
 import { setTheme } from "./scripts/store/slices/app/app-slices";
 import InformPage from "./components/auth/inform-page/InformPage";
 import PrivateRoute from "./components/common/auth-redirect/PrivateRout";
-
+import { ContextSocketProvider } from "./scripts/context/SocketContext";
 import AcceptInvitation from "./components/chat/AcceptInvitation";
 export const DataContext = createContext();
 
@@ -62,7 +62,14 @@ function App() {
             <Route path="/registration" element={<RegistrationPage />} />
             {/* </Route> */}
             <Route path={"/chat"} element={<PrivateRoute path={"chat"} />}>
-              <Route path="/chat" element={<Dashboard />} />
+              <Route
+                path="/chat"
+                element={
+                  <ContextSocketProvider>
+                    <Dashboard />
+                  </ContextSocketProvider>
+                }
+              />
             </Route>
             <Route path="/train" element={<Train />} />
             <Route path="/verify" element={<VerifyAccountPage />} />

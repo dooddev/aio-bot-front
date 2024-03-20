@@ -1,7 +1,7 @@
-import React, { useMemo, useState, useEffect } from "react";
+import User from "../../common/user/User";
+import React, { useContext,useState, useEffect } from "react";
 import logo from "../../../assets/img/logo.png";
 import s from "./LeftSidebar.module.css";
-import User from "../../common/user/User";
 import { useDispatch, useSelector } from "react-redux";
 import {selectPage, selectTheme} from "../../../scripts/store/slices/app/selectors";
 import { selectMe } from "../../../scripts/store/slices/chat/selectors";
@@ -9,6 +9,9 @@ import { selectMessages } from "../../../scripts/store/slices/chat/selectors";
 import { useCreateNewSessionMutation } from "../../../scripts/api/chat-api";
 import { enqueueSnackbar } from "notistack";
 import { useLocation, useNavigate } from "react-router-dom";
+import {
+  ContextSocket,
+} from "../../../scripts/context/SocketContext";
 import { setMessages } from "../../../scripts/store/slices/chat/chat-slice";
 import { useChatSessionsByIdQuery } from "../../../scripts/api/chat-api";
 import { setFriends } from "../../../scripts/store/slices/friend/friend-slice";
@@ -31,7 +34,7 @@ const LeftSidebar = () => {
   const queryParams = new URLSearchParams(location.search);
   const session = queryParams.get("session");
 
-  // const { socket, isConnected } = useSocket();
+  const socket = useContext(ContextSocket);
 
   const [current_session, setCurrentSession] = useState({
     id: "1",
@@ -85,6 +88,12 @@ const LeftSidebar = () => {
     refetch(); // get chat history list
 
     const new_session = res.data.session;
+
+    socket.emit("set user session", {
+      email: me.email,
+      session: new_session,
+    });
+
     setCurrentSession({
       id: "1",
       data: "2024-03-18",
@@ -110,11 +119,9 @@ const LeftSidebar = () => {
   }
 
   const groupHistoryByTime = () => {
-    console.log('sess',historySession)
-
     const today = new Date();
     const yesterday = new Date(today.getTime() - 1000 * 3600 * 24);
-    const fiveDaysAgo = new Date(today.getTime() - 1000 * 3600 * 24 * 5);
+    // const fiveDaysAgo = new Date(today.getTime() - 1000 * 3600 * 24 * 5);
 
     const todayArray = [];
     const yesterdayArray = [];
@@ -125,11 +132,8 @@ const LeftSidebar = () => {
         todayArray.push(item);
       } else if (compareDates(new Date(item.date), yesterday)) {
         yesterdayArray.push(item);
-      } else if (compareDates(new Date(item.date), fiveDaysAgo)) {
+      } else {
         last5Days.push(item);
-      }
-      else {//fix
-        last5Days.push(item)
       }
     });
 
@@ -139,7 +143,6 @@ const LeftSidebar = () => {
   };
 
   const { todayArray, yesterdayArray, last5Days } = groupHistoryByTime();
-  console.log(page)
 
   const LeftSidebarItem = ({ session, header }) => {
     const handleSidebarItemClick = (session) => {
