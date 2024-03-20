@@ -1,26 +1,28 @@
-import React, { useContext, useMemo, useState, useEffect } from "react";
-import logo from "../../assets/img/logo.png";
-import s from "./Chat.module.css";
-import User from "./User";
+import User from "../../common/user/User";
+import React, { useContext,useState, useEffect } from "react";
+import logo from "../../../assets/img/logo.png";
+import s from "./LeftSidebar.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { selectTheme } from "../../scripts/store/slices/app/selectors";
-import { selectMe } from "../../scripts/store/slices/chat/selectors";
-import { selectMessages } from "../../scripts/store/slices/chat/selectors";
-import { useCreateNewSessionMutation } from "../../scripts/api/chat-api";
+import {selectPage, selectTheme} from "../../../scripts/store/slices/app/selectors";
+import { selectMe } from "../../../scripts/store/slices/chat/selectors";
+import { selectMessages } from "../../../scripts/store/slices/chat/selectors";
+import { useCreateNewSessionMutation } from "../../../scripts/api/chat-api";
 import { enqueueSnackbar } from "notistack";
 import { useLocation, useNavigate } from "react-router-dom";
-import { setMessages } from "../../scripts/store/slices/chat/chat-slice";
-import { useChatSessionsByIdQuery } from "../../scripts/api/chat-api";
-import { setFriends } from "../../scripts/store/slices/friend/friend-slice";
 import {
-  ContextSocketProvider,
   ContextSocket,
-} from "../../scripts/context/SocketContext";
+} from "../../../scripts/context/SocketContext";
+import { setMessages } from "../../../scripts/store/slices/chat/chat-slice";
+import { useChatSessionsByIdQuery } from "../../../scripts/api/chat-api";
+import { setFriends } from "../../../scripts/store/slices/friend/friend-slice";
+import {setPage} from "../../../scripts/store/slices/app/app-slices";
 
 const LeftSidebar = () => {
   const theme = useSelector(selectTheme);
   const me = useSelector(selectMe);
   const chat_messages = useSelector(selectMessages);
+  const page=useSelector(selectPage)
+
   const navigate = useNavigate();
   const [createNewSession] = useCreateNewSessionMutation();
   const { data: chathistory_sessions, refetch } = useChatSessionsByIdQuery({
@@ -46,7 +48,7 @@ const LeftSidebar = () => {
     if (chat_messages.length) {
       setCurrentSession({
         id: "1",
-        data: "2024-03-06",
+        data: "2024-03-18",
         header: chat_messages[0].message,
       });
     }
@@ -92,6 +94,12 @@ const LeftSidebar = () => {
       session: new_session,
     });
 
+    setCurrentSession({
+      id: "1",
+      data: "2024-03-18",
+      header: "",
+    })
+    dispatch(setPage('chat'))
     navigate(`/chat?session=${new_session}`);
   };
 
@@ -153,7 +161,7 @@ const LeftSidebar = () => {
 
   return (
     <div
-      className={`${s.container_sidebar} ${s[`container_sidebar_${theme}`]}`}
+      className={`${s.container_sidebar} ${s[`container_sidebar_${theme}`]} ${page==='history' ? s.leftside_full_page : ''}`}
     >
       <img src={logo} className={s.logo} />
       <div
@@ -163,12 +171,14 @@ const LeftSidebar = () => {
         New chat
       </div>
       <div className={s.line}></div>
-      <div className={s.list}>
-        <div
+      <div
           className={`${s.current_session} ${s[`current_session_${theme}`]}`}
-        >
-          <p>{current_session.header}</p>
-        </div>
+      >
+        <p>{current_session.header}</p>
+      </div>
+      <div className={s.list}>
+
+
         {todayArray.length !== 0 && (
           <div>
             <h3

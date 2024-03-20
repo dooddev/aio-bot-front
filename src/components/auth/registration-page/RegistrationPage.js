@@ -1,24 +1,24 @@
 import React, { useState } from "react";
-import logo from "../../assets/img/logo.png";
-import Input from "../common/input/Input";
-import Button from "../common/button/Button";
-import s from "./Auth.module.css";
-import CheckBox from "../common/checkbox/CheckBox";
-import twitter from "../../assets/img/twitter.svg";
-import google from "../../assets/img/google.svg";
-import twitch from "../../assets/img/twitch.svg";
-import discord from "../../assets/img/discord.svg";
+import logo from "../../../assets/img/logo.png";
+import Input from "../../common/input/Input";
+import Button from "../../common/button/Button";
+import s from "../Auth.module.css";
+import CheckBox from "../../common/checkbox/CheckBox";
+import twitter from "../../../assets/img/twitter.svg";
+import google from "../../../assets/img/google.svg";
+import twitch from "../../../assets/img/twitch.svg";
+import discord from "../../../assets/img/discord.svg";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   useRegistrationConfirmationMutation,
   useRegistrationMutation,
-} from "../../scripts/api/auth-api";
+} from "../../../scripts/api/auth-api";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {setEmailVerify, setTempPassword} from "../../scripts/store/slices/app/app-slices";
-import ProgressBar from "../common/progress-bar/ProgressBar";
+import {setEmailVerify, setTempPassword} from "../../../scripts/store/slices/app/app-slices";
+import ProgressBar from "../../common/progress-bar/ProgressBar";
 import { GoogleLogin } from "@react-oauth/google";
 export const signupSchema = yup.object().shape({
   email: yup

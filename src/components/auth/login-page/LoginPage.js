@@ -1,20 +1,19 @@
 import React, {useEffect, useState} from "react";
 import { enqueueSnackbar } from "notistack";
-import s from "./Auth.module.css";
-import Input from "../common/input/Input";
-import logo from "../../assets/img/logo.png";
-import Button from "../common/button/Button";
-import CheckBox from "../common/checkbox/CheckBox";
+import s from "../Auth.module.css";
+import Input from "../../common/input/Input";
+import logo from "../../../assets/img/logo.png";
+import Button from "../../common/button/Button";
+import CheckBox from "../../common/checkbox/CheckBox";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useLoginMutation, useMeQuery } from "../../scripts/api/auth-api";
-import { useGetLastSessionMutation } from "../../scripts/api/chat-api";
-import { setLocalStorage } from "../../scripts/common/helpers/localStorage";
-import ProgressBar from "../common/progress-bar/ProgressBar";
-import { useDispatch } from "react-redux";
-import { setIsAuth } from "../../scripts/store/slices/app/app-slices";
+import { useLoginMutation } from "../../../scripts/api/auth-api";
+import { useGetLastSessionMutation } from "../../../scripts/api/chat-api";
+import { setLocalStorage } from "../../../scripts/common/helpers/localStorage";
+import ProgressBar from "../../common/progress-bar/ProgressBar";
+import { setIsAuth } from "../../../scripts/store/slices/app/app-slices";
 import { useCookies } from "react-cookie";
 
 const schema = yup.object().shape({
@@ -170,7 +169,7 @@ const LoginPage = () => {
         <p style={{ color: "rgba(255, 255, 255, 0.75", fontWeight: 700 }}>
           {" "}
           Don’t have an account?
-          <div onClick={handleNavigateToRegistration} style={{ color: "#643CF0" }}>
+          <div onClick={handleNavigateToRegistration} style={{ color: "#643CF0" ,cursor:'pointer'}}>
             {" "}
             Sign up
           </div>

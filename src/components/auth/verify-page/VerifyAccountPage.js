@@ -1,21 +1,21 @@
 import React, {useState} from 'react';
-import s from './Auth.module.css'
-import Input from "../common/input/Input";
-import logo from '../../assets/img/logo.png'
-import Button from "../common/button/Button";
+import s from '../Auth.module.css'
+import Input from "../../common/input/Input";
+import logo from '../../../assets/img/logo.png'
+import Button from "../../common/button/Button";
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup"
-import {useLoginMutation, useRegistrationConfirmationMutation, useSendCodeMutation} from "../../scripts/api/auth-api";
+import {useLoginMutation, useRegistrationConfirmationMutation, useSendCodeMutation} from "../../../scripts/api/auth-api";
 import {useSelector} from "react-redux";
-import {selectEmailVerify, selectTempPassword} from "../../scripts/store/slices/app/selectors";
-import ProgressBar from "../common/progress-bar/ProgressBar";
-import {setEmailVerify, setIsAuth} from "../../scripts/store/slices/app/app-slices";
+import {selectEmailVerify, selectTempPassword} from "../../../scripts/store/slices/app/selectors";
+import ProgressBar from "../../common/progress-bar/ProgressBar";
+import {setEmailVerify, setIsAuth} from "../../../scripts/store/slices/app/app-slices";
 import {useLocation, useNavigate} from "react-router-dom";
-import {setLocalStorage} from "../../scripts/common/helpers/localStorage";
+import {setLocalStorage} from "../../../scripts/common/helpers/localStorage";
 import {enqueueSnackbar} from "notistack";
 import {useCookies} from "react-cookie";
-import {useGetLastSessionMutation} from "../../scripts/api/chat-api";
+import {useGetLastSessionMutation} from "../../../scripts/api/chat-api";
 
 
 const VerifyAccountPage = () => {

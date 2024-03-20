@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import s from "./Auth.module.css";
-import logo from "../../assets/img/logo.png";
-import Input from "../common/input/Input";
-import Button from "../common/button/Button";
+import s from "../Auth.module.css";
+import logo from "../../../assets/img/logo.png";
+import Input from "../../common/input/Input";
+import Button from "../../common/button/Button";
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup"
-import {useNewPasswordMutation} from "../../scripts/api/auth-api";
-import ProgressBar from "../common/progress-bar/ProgressBar";
+import {useNewPasswordMutation} from "../../../scripts/api/auth-api";
+import ProgressBar from "../../common/progress-bar/ProgressBar";
 import {useNavigate} from "react-router-dom";
 
 export const resetPasswordPage = yup.object().shape({
@@ -56,7 +56,7 @@ const ResetPassword = () => {
             if(res.error){
                 return
             }
-            navigate('/login')
+            navigate('/login-page')
 
         }
     }

@@ -64,7 +64,7 @@ const PasswordPage = () => {
                     <div className={s.name_container}>
                         <input className={s.input}  type="password"  {...register("old_pwd")}/>
                         <span className={s.error}>{errors.old_pwd?.message}</span>
-                        <p style={{fontWeight:300,fontSize:14}}>Note: Please input your current password and type the new <br/> password below and click save.</p>
+                        <p className={s.note}>Note: Please input your current password and type the new <br/> password below and click save.</p>
                     </div>
                     <p>New Password</p>
                     <input

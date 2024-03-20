@@ -9,6 +9,7 @@ import ProgressBar from "../progress-bar/ProgressBar";
 import {useGetUserQuery} from "../../../scripts/api/auth-api";
 import {enqueueSnackbar} from "notistack";
 import {setMe} from "../../../scripts/store/slices/chat/chat-slice";
+import ThemeComponent from "../theme/ThemeComponent";
 
 const MyDetailsPage = () => {
     const me=useSelector(selectMe)
@@ -86,6 +87,7 @@ const MyDetailsPage = () => {
     return (
         <div>
             <div className={s.container}>
+
                 <p>Name</p>
                 <div className={s.name_container}>
                     <input className={s.input}  value={username}
@@ -136,6 +138,9 @@ const MyDetailsPage = () => {
             <div className={s.container}>
                 <p>Email</p>
                 <input className={s.input} value={email}/>
+            </div>
+            <div className={s.container_theme}>
+                <ThemeComponent/>
             </div>
             {/*<div className={s.container}>*/}
             {/*    <p>Description (Optional)</p>*/}

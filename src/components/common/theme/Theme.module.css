@@ -1,0 +1,17 @@
+.container_theme {
+    display: flex;
+    gap: 20px;
+    height: 80px;
+}
+.container_theme img {
+    cursor: pointer;
+    width: 30px;
+}
+
+
+@media (max-width:700px) {
+
+
+
+
+}

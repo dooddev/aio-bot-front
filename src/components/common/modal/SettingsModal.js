@@ -25,10 +25,10 @@ const SettingsModal = ({isOpen,setIsOpen}) => {
                     <p className={`${s.tab_item} ${activePage===0&&s.active_item} `} onClick={()=>changePage(0)}>My details</p>
                     <p className={`${s.tab_item} ${activePage===1&&s.active_item} `} onClick={()=>changePage(1)}>Account</p>
                     <p className={`${s.tab_item} ${activePage===2&&s.active_item}  `} onClick={()=>changePage(2)}>Password</p>
-                    <p  className={`${s.tab_item} ${activePage===3&&s.active_item} ${s.disabled}`} onClick={()=>changePage(3)}>Billing</p>
-                    <p className={`${s.tab_item} ${activePage===4&&s.active_item} ${s.disabled}`} onClick={()=>changePage(4)}>Plan</p>
-                    <p className={`${s.tab_item} ${activePage===5&&s.active_item} ${s.disabled} `} onClick={()=>changePage(5)}>Integration</p>
-                    <p className={`${s.tab_item} ${activePage===6&&s.active_item} ${s.disabled}  `} onClick={()=>changePage(6)}>Notifications</p>
+                    {/*<p  className={`${s.tab_item} ${activePage===3&&s.active_item} ${s.disabled}`} onClick={()=>changePage(3)}>Billing</p>*/}
+                    {/*<p className={`${s.tab_item} ${activePage===4&&s.active_item} ${s.disabled}`} onClick={()=>changePage(4)}>Plan</p>*/}
+                    {/*<p className={`${s.tab_item} ${activePage===5&&s.active_item} ${s.disabled} `} onClick={()=>changePage(5)}>Integration</p>*/}
+                    {/*<p className={`${s.tab_item} ${activePage===6&&s.active_item} ${s.disabled}  `} onClick={()=>changePage(6)}>Notifications</p>*/}
                 </div>
                 {activePage===0&& <MyDetailsPage/>}
                 {activePage===1&&<AccountPage/>}

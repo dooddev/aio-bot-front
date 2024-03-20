@@ -1,13 +1,11 @@
-import React, { useContext, useRef, useState, useEffect } from "react";
+import React, {useRef, useState, useEffect, useContext} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { DataContext } from "../../App";
-import { environment } from "../../environment";
 import s from "./Chat.module.css";
-import LeftSidebar from "./LeftSidebar";
+import LeftSidebar from "./left-sidebar/LeftSidebar";
 import logo from "../../assets/img/logo.png";
-import User from "./User";
+import User from "../common/user/User";
 import pen from "../../assets/pen.gif";
-import RightSidebar from "./RightSidebar";
+import RightSidebar from "./right-sidebar/RightSidebar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { selectMe } from "../../scripts/store/slices/chat/selectors";
 import { selectFriends } from "../../scripts/store/slices/friend/selectors";
@@ -18,6 +16,7 @@ import {
 } from "../../scripts/store/slices/chat/chat-slice";
 import { selectMessages } from "../../scripts/store/slices/chat/selectors";
 import {
+  selectPage,
   selectIsAuth,
   selectSocketStatus,
   selectTheme,
@@ -28,15 +27,18 @@ import {
   useGetFriendListBySessionMutation,
   useChatHistoryBySessionMutation,
   useSendVoteMutation,
-  // useChatSessionsByIdQuery
 } from "../../scripts/api/chat-api";
 import red_like from "../../assets/img/red_like.svg";
 import white_like from "../../assets/img/white_like.svg";
+import SettingsModal from "../common/modal/SettingsModal";
+import BottomNavBar from "../common/bottom-nav/BottomNavBar";
+import {setPage} from "../../scripts/store/slices/app/app-slices";
 import { ContextSocket } from "../../scripts/context/SocketContext";
 
 const Dashboard = () => {
   const [question, setQuestion] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
   const [sendMessage] = useSendMessageMutation();
   const [getFriendListBySession] = useGetFriendListBySessionMutation();
   const [ChatHistoryBySession] = useChatHistoryBySessionMutation();
@@ -47,10 +49,10 @@ const Dashboard = () => {
   const messages = useSelector(selectMessages);
   const friend_list = useSelector(selectFriends);
   // const isSocketConnected = useSelector(selectSocketStatus);
+  const page=useSelector(selectPage)
 
   const socket = useContext(ContextSocket);
   const ref = useRef();
-  const { data, setData } = useContext(DataContext);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -63,7 +65,7 @@ const Dashboard = () => {
       friend.email === me.email ? { ...friend, username: me.username } : friend
     );
     dispatch(setFriends(newList));
-    console.log("CHANGE NAME");
+
   }, [me.username]);
   useEffect(() => {
     const newList = friend_list.map((friend) =>
@@ -72,7 +74,7 @@ const Dashboard = () => {
         : friend
     );
     dispatch(setFriends(newList));
-    console.log("CHANGE AVATAR");
+
   }, [me.avatar_url]);
 
   const handleSendVote = (id) => {
@@ -87,9 +89,6 @@ const Dashboard = () => {
   };
 
   const handleMessage = (data) => {
-    console.log("receiving new message");
-    console.log(data);
-    console.log("receiving end");
     if (data.email === me.email) return;
     dispatch(
       addMessages([
@@ -165,10 +164,6 @@ const Dashboard = () => {
       getFriendList();
       getPrevHistory();
 
-      console.log(
-        "@@@@@@@@@@@@@@ before sending set user session @@@@@@@@@@@@@@@@"
-      );
-
       socket.emit("set user session", {
         email: me.email,
         session: session,
@@ -217,7 +212,6 @@ const Dashboard = () => {
       const axiosResponse = await sendMessage(query);
       setIsLoading(false);
       const responseData = axiosResponse.data;
-      setData(responseData);
       if (responseData.content != null && responseData.content.length != "") {
         dispatch(
           addMessages([
@@ -261,11 +255,10 @@ const Dashboard = () => {
   }
 
   return (
-    <div style={{ display: "flex", width: "100%" }}>
-      <LeftSidebar />
-
+    <div className={s.dashboard}>
+      <LeftSidebar/>
       <div className={`${s.container} ${s[`container_${theme}`]}`}>
-        <p className={`${s.text}  ${s.bold_text}   ${s[`text_${theme}`]}`}>
+        <p className={` ${s.bold_text}   ${s[`text_${theme}`]}`}>
           AIOChat Bot 1.0
         </p>
 
@@ -363,12 +356,18 @@ const Dashboard = () => {
             />
           </div>
         </div>
-        <p className={`${s.text} ${s[`text_${theme}`]}`}>
+        <p className={`${s.text} ${s.hide} ${s[`text_${theme}`]}`}>
           We are constantly training our AI to provide you with the best
           results. Please be patient.
         </p>
+
+       <BottomNavBar/>
       </div>
+
       <RightSidebar />
+      <SettingsModal
+          isOpen={page==='settings'}
+          setIsOpen={(value) => dispatch(setPage(value))}/>
     </div>
   );
 };

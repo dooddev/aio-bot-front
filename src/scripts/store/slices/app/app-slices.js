@@ -24,6 +24,7 @@ const appSlice = createSlice({
     emailVerify: null,
     tempPassword: null,
     socketConnected: false,
+    page:null
   },
   reducers: {
     setTheme: (state, action) => {
@@ -41,10 +42,14 @@ const appSlice = createSlice({
     setSocketConnected: (state, action) => {
       state.socketConnected = action.payload;
     },
+      setPage:(state,action)=>{
+          state.page=action.payload
+      },
   },
 });
 
 export const {
+    setPage,
   setTheme,
   setEmailVerify,
   setIsAuth,
@@ -53,6 +58,8 @@ export const {
 } = appSlice.actions;
 
 export default appSlice.reducer;
+
+
 
 // import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 // import axios from "axios";

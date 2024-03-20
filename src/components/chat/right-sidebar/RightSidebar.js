@@ -1,21 +1,18 @@
 import React, { useState } from "react";
 import { enqueueSnackbar } from "notistack";
-import s from "./Chat.module.css";
-import User from "./User";
-import moon from "../../assets/img/moon.svg";
-import sun from "../../assets/img/sun.svg";
+import s from "./RightSidebar.module.css";
+import User from "../../common/user/User";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { selectTheme } from "../../scripts/store/slices/app/selectors";
-import { setTheme } from "../../scripts/store/slices/app/app-slices";
-import { setLocalStorage } from "../../scripts/common/helpers/localStorage";
-import { useSendInvitationMutation } from "../../scripts/api/chat-api";
-import { selectMe } from "../../scripts/store/slices/chat/selectors";
-import PopUp from "../common/popup/PopUp";
-import ProgressBar from "../common/progress-bar/ProgressBar";
-import { selectFriends } from "../../scripts/store/slices/friend/selectors";
-import { useGetFriendListBySessionMutation } from "../../scripts/api/chat-api";
-import { setFriends } from "../../scripts/store/slices/friend/friend-slice";
+import {selectPage, selectTheme} from "../../../scripts/store/slices/app/selectors";
+import { useSendInvitationMutation } from "../../../scripts/api/chat-api";
+import { selectMe } from "../../../scripts/store/slices/chat/selectors";
+import PopUp from "../../common/popup/PopUp";
+import ProgressBar from "../../common/progress-bar/ProgressBar";
+import { selectFriends } from "../../../scripts/store/slices/friend/selectors";
+import { useGetFriendListBySessionMutation } from "../../../scripts/api/chat-api";
+import { setFriends } from "../../../scripts/store/slices/friend/friend-slice";
+import ThemeComponent from "../../common/theme/ThemeComponent";
 const RightSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [friend_email, setFriendEmail] = useState("");
@@ -29,14 +26,12 @@ const RightSidebar = () => {
   const theme = useSelector(selectTheme);
   const me = useSelector(selectMe);
   const friend_list = useSelector(selectFriends);
+  const page=useSelector(selectPage)
 
   const [sendInvitation, { isLoading }] = useSendInvitationMutation();
   const [getFriendListBySession] = useGetFriendListBySessionMutation();
 
-  const changeTheme = (value) => {
-    dispatch(setTheme(value));
-    setLocalStorage("theme", value);
-  };
+
 
   const onSendInvitation = async () => {
     if (friend_email == "") {
@@ -71,12 +66,12 @@ const RightSidebar = () => {
 
   return (
     <div
-      className={`${s.container_sidebar} ${s[`container_sidebar_${theme}`]}`}
+      className={`${s.container_sidebar} ${s[`container_sidebar_${theme}`]}  ${page==='friends' ? s.righrside_full_page : ''}`}
     >
       <div className={s.container_theme}>
-        <img src={sun} onClick={() => changeTheme("light")} />
-        <img src={moon} onClick={() => changeTheme("dark")} />
+        <ThemeComponent/>
       </div>
+
       <div
         className={`${s.sidebar_btn} ${s[`sidebar_btn_${theme}`]}`}
         onClick={() => setIsOpen(!isOpen)}
@@ -105,10 +100,14 @@ const RightSidebar = () => {
       </div>
 
       <div className={s.line}></div>
-      {friend_list &&
-        friend_list.map((user, idx) => (
-          <User key={`right-sidebar-user-${idx}`} isOpen={false} user={user} />
-        ))}
+      <div className={s.friends_list}>
+        {friend_list &&
+            friend_list.map((user, idx) => (
+                <User key={`right-sidebar-user-${idx}`} isOpen={false} user={user} />
+            ))}
+      </div>
+
+
       <PopUp
         text={"Changes have been saved!"}
         isOpen={isPopup}

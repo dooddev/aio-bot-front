@@ -1,6 +1,6 @@
 import React from 'react';
-import s from "./Auth.module.css";
-import logo from "../../assets/img/logo.png";
+import s from "../Auth.module.css";
+import logo from "../../../assets/img/logo.png";
 
 const InformPage = () => {
     return (
