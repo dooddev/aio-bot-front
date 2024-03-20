@@ -1,18 +1,16 @@
 import React, {useEffect, useState} from "react";
-import avatar from "../../assets/img/Avatars.png";
-import s from "./Chat.module.css";
-import menu from "../../assets/img/menu.svg";
-import SettingsModal from "../common/modal/SettingsModal";
+import s from "./User.module.css";
+import menu from "../../../assets/img/menu.svg";
+import SettingsModal from "../modal/SettingsModal";
 import { useDispatch, useSelector } from "react-redux";
-import { selectTheme } from "../../scripts/store/slices/app/selectors";
-import { clearLocalStorage } from "../../scripts/common/helpers/localStorage";
-import { setIsAuth } from "../../scripts/store/slices/app/app-slices";
-import {setMe, setMessages} from "../../scripts/store/slices/chat/chat-slice";
-import { useCookies } from "react-cookie";
+import { selectTheme } from "../../../scripts/store/slices/app/selectors";
+import { clearLocalStorage } from "../../../scripts/common/helpers/localStorage";
+import { setIsAuth } from "../../../scripts/store/slices/app/app-slices";
+import {setMe, setMessages} from "../../../scripts/store/slices/chat/chat-slice";
 import {useLocation, useNavigate} from "react-router-dom";
 import Cookies from "js-cookie";
-import { useLogoutQuery } from "../../scripts/api/auth-api";
-import { useSendMessageMutation } from "../../scripts/api/chat-api";
+import { useLogoutQuery } from "../../../scripts/api/auth-api";
+
 
 const User = ({ isMenu, user }) => {
   const [skip, setSkip] = useState(true);
@@ -46,7 +44,7 @@ const User = ({ isMenu, user }) => {
       params.delete('session'); // Remove the session parameter
       setTimeout(() => {
         navigate({
-          pathname: '/login',
+          pathname: '/login-page',
           search: ''
         });
       }, 0);

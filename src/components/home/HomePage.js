@@ -1,13 +1,13 @@
 import React from "react";
 import logo from "../../assets/img/logo.png";
 import Button from "../common/button/Button";
-import s from "../auth-page/Auth.module.css";
+import s from "../auth/Auth.module.css";
 import SideBar from "../common/sidebar/SideBar";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectIsAuth } from "../../scripts/store/slices/app/selectors";
 
-const Home = () => {
+const HomePage = () => {
   const isAuth = useSelector(selectIsAuth);
 
   const navigate = useNavigate();
@@ -48,4 +48,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

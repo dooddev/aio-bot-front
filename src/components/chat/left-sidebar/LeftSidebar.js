@@ -1,19 +1,18 @@
 import React, { useMemo, useState, useEffect } from "react";
-import logo from "../../assets/img/logo.png";
-import s from "./Chat.module.css";
-import User from "./User";
+import logo from "../../../assets/img/logo.png";
+import s from "./LeftSidebar.module.css";
+import User from "../../common/user/User";
 import { useDispatch, useSelector } from "react-redux";
-import {selectPage, selectTheme} from "../../scripts/store/slices/app/selectors";
-import { selectMe } from "../../scripts/store/slices/chat/selectors";
-import { selectMessages } from "../../scripts/store/slices/chat/selectors";
-import { useCreateNewSessionMutation } from "../../scripts/api/chat-api";
+import {selectPage, selectTheme} from "../../../scripts/store/slices/app/selectors";
+import { selectMe } from "../../../scripts/store/slices/chat/selectors";
+import { selectMessages } from "../../../scripts/store/slices/chat/selectors";
+import { useCreateNewSessionMutation } from "../../../scripts/api/chat-api";
 import { enqueueSnackbar } from "notistack";
 import { useLocation, useNavigate } from "react-router-dom";
-import { setMessages } from "../../scripts/store/slices/chat/chat-slice";
-import { useChatSessionsByIdQuery } from "../../scripts/api/chat-api";
-import { setFriends } from "../../scripts/store/slices/friend/friend-slice";
-import { useSocket } from "../../scripts/hooks/useSocket";
-import {setPage} from "../../scripts/store/slices/app/app-slices";
+import { setMessages } from "../../../scripts/store/slices/chat/chat-slice";
+import { useChatSessionsByIdQuery } from "../../../scripts/api/chat-api";
+import { setFriends } from "../../../scripts/store/slices/friend/friend-slice";
+import {setPage} from "../../../scripts/store/slices/app/app-slices";
 
 const LeftSidebar = () => {
   const theme = useSelector(selectTheme);
@@ -169,12 +168,14 @@ const LeftSidebar = () => {
         New chat
       </div>
       <div className={s.line}></div>
-      <div className={s.list}>
-        <div
+      <div
           className={`${s.current_session} ${s[`current_session_${theme}`]}`}
-        >
-          <p>{current_session.header}</p>
-        </div>
+      >
+        <p>{current_session.header}</p>
+      </div>
+      <div className={s.list}>
+
+
         {todayArray.length !== 0 && (
           <div>
             <h3

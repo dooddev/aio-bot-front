@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
-import s from './Auth.module.css'
-import Input from "../common/input/Input";
-import logo from '../../assets/img/logo.png'
-import Button from "../common/button/Button";
-import CheckBox from "../common/checkbox/CheckBox";
+import s from '../Auth.module.css'
+import Input from "../../common/input/Input";
+import logo from '../../../assets/img/logo.png'
+import Button from "../../common/button/Button";
+import CheckBox from "../../common/checkbox/CheckBox";
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup"
-import {useRecoveryPasswordMutation} from "../../scripts/api/auth-api";
+import {useRecoveryPasswordMutation} from "../../../scripts/api/auth-api";
 import {Link, useNavigate} from "react-router-dom";
-import ProgressBar from "../common/progress-bar/ProgressBar";
+import ProgressBar from "../../common/progress-bar/ProgressBar";
 
 const schema = yup.object().shape({
     email: yup

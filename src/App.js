@@ -8,23 +8,23 @@ import {
 import { SnackbarProvider } from "notistack";
 import "./App.css";
 import "./assets/nucleo-icons.css";
-import Dashboard from "./components/chat-page/Dashboard";
-import Train from "./components/Train";
+import Dashboard from "./components/chat/Dashboard";
+import Train from "./components/train/Train";
 import { createContext, useEffect, useState } from "react";
-import LoginPage from "./components/auth-page/LoginPage";
-import RegistrationPage from "./components/auth-page/RegistrationPage";
+import LoginPage from "./components/auth/login-page/LoginPage";
+import RegistrationPage from "./components/auth/registration-page/RegistrationPage";
 import Footer from "./components/common/footer/Footer";
-import VerifyAccountPage from "./components/auth-page/VerifyAccountPage";
-import RecoveryPasswordPage from "./components/auth-page/RecoveryPasswordPage";
-import Home from "./components/home-page/Home";
-import ResetPassword from "./components/auth-page/ResetPasswordPage";
+import VerifyAccountPage from "./components/auth/verify-page/VerifyAccountPage";
+import RecoveryPasswordPage from "./components/auth/recovery-password-page/RecoveryPasswordPage";
+import HomePage from "./components/home/HomePage";
+import ResetPassword from "./components/auth/resest-password-page/ResetPasswordPage";
 import { getLocalStorage } from "./scripts/common/helpers/localStorage";
 import { useDispatch } from "react-redux";
 import { setTheme } from "./scripts/store/slices/app/app-slices";
-import InformPage from "./components/auth-page/InformPage";
+import InformPage from "./components/auth/inform-page/InformPage";
 import PrivateRoute from "./components/common/auth-redirect/PrivateRout";
 
-import AcceptInvitation from "./components/chat-page/AcceptInvitation";
+import AcceptInvitation from "./components/chat/AcceptInvitation";
 export const DataContext = createContext();
 
 let socket;
@@ -51,7 +51,7 @@ function App() {
       <DataContext.Provider value={{ data, setData }}>
         <div className="App">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<HomePage />} />
 
             <Route path="/login" element={<LoginPage />} />
 

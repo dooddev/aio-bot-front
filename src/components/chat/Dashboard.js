@@ -1,11 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import s from "./Chat.module.css";
-import LeftSidebar from "./LeftSidebar";
+import LeftSidebar from "./left-sidebar/LeftSidebar";
 import logo from "../../assets/img/logo.png";
-import User from "./User";
+import User from "../common/user/User";
 import pen from "../../assets/pen.gif";
-import RightSidebar from "./RightSidebar";
+import RightSidebar from "./right-sidebar/RightSidebar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { selectMe } from "../../scripts/store/slices/chat/selectors";
 import { selectFriends } from "../../scripts/store/slices/friend/selectors";

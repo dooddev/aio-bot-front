@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { environment } from "../environment";
+import { environment } from "../../environment";
 
 const Train = () => {
   const BASE_URL = environment.BASE_URL;

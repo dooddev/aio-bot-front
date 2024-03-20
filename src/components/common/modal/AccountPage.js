@@ -26,7 +26,7 @@ const AccountPage = () => {
         clearLocalStorage("access-token");
         dispatch(setIsAuth(false));
         dispatch(setMe(null));
-        navigate("/login");
+        navigate("/login-page");
     };
 
     const confirmDialog=()=>{
@@ -37,7 +37,7 @@ const AccountPage = () => {
     const handleDeleteUser=()=>{
         setIsPopup(false)
         deleteUser(me.id)
-        navigate("/login");
+        navigate("/login-page");
     }
 
 

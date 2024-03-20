@@ -16,7 +16,22 @@
 .chat-section {
   height: calc(100vh - 200px);
 }
-::-webkit-scrollbar {
+body::-webkit-scrollbar {
   display: none ;
 }
 
+::-webkit-scrollbar {
+  width:0px
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(2,0,36);
+  background: linear-gradient(180deg, rgb(26, 23, 50) 0%, rgba(100,60,240,1) 52%, rgb(26, 23, 50) 100%);
+  border-radius: 10px;
+
+  border-left:19px solid #1a1732;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px !important;
+}
