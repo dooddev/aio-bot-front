@@ -56,7 +56,7 @@ const ResetPassword = () => {
             if(res.error){
                 return
             }
-            navigate('/login-page')
+            navigate('/login')
 
         }
     }

@@ -69,7 +69,6 @@ const LeftSidebar = () => {
       });
       idx++;
     }
-    console.log(ret_data);
     setHistorySession(ret_data);
   }, [chathistory_sessions]);
 
@@ -137,7 +136,7 @@ const LeftSidebar = () => {
       }
     });
 
-    console.log(todayArray, yesterdayArray, last5Days);
+
 
     return { todayArray, yesterdayArray, last5Days };
   };

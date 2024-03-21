@@ -27,7 +27,7 @@ function PrivateRoute({ path }) {
 
   useEffect(() => {
     if (!session) {
-      navigate("/login-page");
+      navigate("/login");
     }
   }, []);
 
@@ -125,7 +125,7 @@ function PrivateRoute({ path }) {
         to={
           session != undefined && session != null
             ? `/login?session=${session}`
-            : "/login-page"
+            : "/login"
         }
       />
     );

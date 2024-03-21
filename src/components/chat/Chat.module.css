@@ -103,6 +103,7 @@
   padding: 1px;
   text-align: start;
   border-radius: 10px;
+
 }
 
 .message_dark {
@@ -111,8 +112,10 @@
   color: #f5f5f5;
   min-height: 60px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: start;
   padding: 20px;
+  justify-content: center;
   box-shadow: 0px 2px 32px 0px rgba(100, 60, 240, 0.15) inset;
   font-weight: 300;
 }
@@ -122,7 +125,9 @@
   color: #090119;
   min-height: 60px;
   display: flex;
-  align-items: center;
+  align-items: start;
+  justify-content: center;
+  flex-direction: column;
   padding: 20px;
   box-shadow: 0px 2px 32px 0px rgba(100, 60, 240, 0.15) inset;
   font-weight: 300;
@@ -162,18 +167,7 @@
 
 
 
-.type_container {
-  display: flex;
-  width: 80%;
-  align-items: start;
 
-}
-.type_container span {
-  color: rgba(245, 245, 245, 0.4);
-}
-.type_container img {
-  width: 60px;
-}
 
 
 

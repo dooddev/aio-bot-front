@@ -22,7 +22,7 @@ export default function AcceptInvitation() {
     if (data && isSuccess) {
       navigate(`/chat?session=${chat_session}&token=${token}`);
     } else if (!data && isError) {
-      navigate("/login-page");
+      navigate("/login");
     }
   }, [data]);
 
