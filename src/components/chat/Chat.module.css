@@ -165,7 +165,8 @@
 .type_container {
   display: flex;
   width: 80%;
-  align-items: center;
+  align-items: start;
+
 }
 .type_container span {
   color: rgba(245, 245, 245, 0.4);
