@@ -34,6 +34,8 @@ import SettingsModal from "../common/modal/SettingsModal";
 import BottomNavBar from "../common/bottom-nav/BottomNavBar";
 import {setPage} from "../../scripts/store/slices/app/app-slices";
 import { ContextSocket } from "../../scripts/context/SocketContext";
+import TypeLoading from "../common/type-loading/TypeLoading";
+import LikeButton from "../common/like-button/LikeButton";
 
 const Dashboard = () => {
   const [question, setQuestion] = useState("");
@@ -42,7 +44,6 @@ const Dashboard = () => {
   const [sendMessage] = useSendMessageMutation();
   const [getFriendListBySession] = useGetFriendListBySessionMutation();
   const [ChatHistoryBySession] = useChatHistoryBySessionMutation();
-  const [sendVote] = useSendVoteMutation();
 
   const theme = useSelector(selectTheme);
   const me = useSelector(selectMe);
@@ -77,16 +78,7 @@ const Dashboard = () => {
 
   }, [me.avatar_url]);
 
-  const handleSendVote = (id) => {
-    const res = sendVote({ id: id, mode: "up" });
-    if (res.error) {
-      return;
-    }
-    const new_messages = messages.map((message) =>
-      message.id === id ? { ...message, liked: true } : message
-    );
-    dispatch(setMessages(new_messages));
-  };
+
 
   const handleMessage = (data) => {
     if (data.email === me.email) return;
@@ -254,6 +246,27 @@ const Dashboard = () => {
     }
   }
 
+  const renderMessageContent = (content) => {
+
+    const lines = content.split('\n\n');
+    return lines.map((line, index) => {
+      const parts = line.split('**');
+
+      return (
+          <p key={index}>
+            {index===0? '':<br/>}
+            {parts.map((part, index) => {
+              return index % 2 === 0 ? (
+                  <React.Fragment key={index}>{part}</React.Fragment>
+              ) : (
+                  <strong key={index} style={{ color: theme==='dark'?'rgb(206 206 235)':'dark',fontWeight:700 }}>{part}</strong>
+              );
+            })}
+          </p>
+      );
+    });
+  };
+
   return (
     <div className={s.dashboard}>
       <LeftSidebar/>
@@ -269,7 +282,7 @@ const Dashboard = () => {
                 <div key={`chatbot-message-node-${index}`}>
                   <div className={`${s.message}`} key={index}>
                     <p className={` ${s[`message_${theme}`]}`}>
-                      {message.message}
+                      {renderMessageContent(message.message)}
                     </p>
                   </div>
                   <div
@@ -287,15 +300,7 @@ const Dashboard = () => {
                         {getRecipientName(friend_list, message.recipient, me)}
                       </p>
                     </div>
-                    {message.liked ? (
-                      <img src={red_like} className={s.like} />
-                    ) : (
-                      <img
-                        src={white_like}
-                        className={s.like}
-                        onClick={() => handleSendVote(message.id)}
-                      />
-                    )}
+                    <LikeButton message={message}/>
                   </div>
                 </div>
               ) : (
@@ -330,17 +335,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-
-          <div className={s.type_container} style={{height:isLoading?'220px':'136px'}}>
-            {isLoading&&
-                <div style={{display:'flex',alignItems:'center'}}>
-                  <img src={pen} />
-                  <span>AIOBot is typing....</span>
-                </div>
-            }
-
-
-          </div>
+          <TypeLoading isLoading={isLoading}/>
 
         <div
           className={s.input_container}

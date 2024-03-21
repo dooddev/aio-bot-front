@@ -44,7 +44,7 @@ const User = ({ isMenu, user }) => {
       params.delete('session'); // Remove the session parameter
       setTimeout(() => {
         navigate({
-          pathname: '/login-page',
+          pathname: '/login',
           search: ''
         });
       }, 0);

@@ -139,6 +139,7 @@
     gap: 20px;
     align-items: center;
     padding-top: 20px;
+    z-index: 2;
 }
 .container_sidebar_dark {
     background: #1a1732;
