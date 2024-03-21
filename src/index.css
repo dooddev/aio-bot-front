@@ -14,7 +14,10 @@
 }
 
 .chat-section {
-  height: calc(100vh - 200px);
+
+
+  margin-bottom:105px;
+
 }
 body::-webkit-scrollbar {
   display: none ;
