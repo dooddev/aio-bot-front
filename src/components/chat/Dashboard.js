@@ -337,8 +337,7 @@ const Dashboard = () => {
           </div>
         )}
         <div
-          className=" w-full items-center justify-center flex"
-          style={{ bottom: 0 }}
+          className={s.input_container}
         >
           <div className={s.border}>
             <input
@@ -355,11 +354,12 @@ const Dashboard = () => {
               }}
             />
           </div>
+          <p className={`${s.text} ${s.hide} ${s[`text_${theme}`]}`}>
+            We are constantly training our AI to provide you with the best
+            results. Please be patient.
+          </p>
+
         </div>
-        <p className={`${s.text} ${s.hide} ${s[`text_${theme}`]}`}>
-          We are constantly training our AI to provide you with the best
-          results. Please be patient.
-        </p>
 
        <BottomNavBar/>
       </div>
