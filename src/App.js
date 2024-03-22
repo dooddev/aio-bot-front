@@ -6,6 +6,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
+import ReactGA from "react-ga"
 import "./App.css";
 import "./assets/nucleo-icons.css";
 import Dashboard from "./components/chat/Dashboard";
@@ -26,6 +27,9 @@ import PrivateRoute from "./components/common/auth-redirect/PrivateRout";
 import { ContextSocketProvider } from "./scripts/context/SocketContext";
 import AcceptInvitation from "./components/chat/AcceptInvitation";
 export const DataContext = createContext();
+
+const TRACKING_ID = "G-WCSG6BH638"
+ReactGA.initialize(TRACKING_ID);
 
 function App() {
   const [data, setData] = useState({});
