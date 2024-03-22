@@ -6,7 +6,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
-import ReactGA from "react-ga"
+import ReactGA from "react-ga4";
 import "./App.css";
 import "./assets/nucleo-icons.css";
 import Dashboard from "./components/chat/Dashboard";
@@ -28,7 +28,7 @@ import { ContextSocketProvider } from "./scripts/context/SocketContext";
 import AcceptInvitation from "./components/chat/AcceptInvitation";
 export const DataContext = createContext();
 
-const TRACKING_ID = "G-WCSG6BH638"
+const TRACKING_ID = "G-WCSG6BH638";
 ReactGA.initialize(TRACKING_ID);
 
 function App() {
@@ -42,7 +42,7 @@ function App() {
     const theme = getLocalStorage("theme");
     dispatch(setTheme(theme || "dark"));
 
-    ReactGA.pageview(window.location.pathname);
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
   }, []);
 
   return (
