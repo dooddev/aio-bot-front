@@ -27,8 +27,6 @@ import { ContextSocketProvider } from "./scripts/context/SocketContext";
 import AcceptInvitation from "./components/chat/AcceptInvitation";
 export const DataContext = createContext();
 
-let socket;
-
 function App() {
   const [data, setData] = useState({});
   const location = useLocation();
@@ -39,6 +37,8 @@ function App() {
   useEffect(() => {
     const theme = getLocalStorage("theme");
     dispatch(setTheme(theme || "dark"));
+
+    ReactGA.pageview(window.location.pathname);
   }, []);
 
   return (
