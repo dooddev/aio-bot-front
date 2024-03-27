@@ -31,6 +31,24 @@ export const DataContext = createContext();
 const TRACKING_ID = "G-WCSG6BH638";
 ReactGA.initialize(TRACKING_ID);
 
+import { datadogRum } from "@datadog/browser-rum";
+
+datadogRum.init({
+  applicationId: "7d3628c1-a4a0-4a22-8461-0d896ccd7147",
+  clientToken: "pub811d94c9c0615293dc77b8dedd18f9e1",
+  site: "datadoghq.com",
+  service: "aio-app",
+  env: "prod",
+  // Specify a version number to identify the deployed version of your application in Datadog
+  version: "1.0.0",
+  sessionSampleRate: 100,
+  sessionReplaySampleRate: 0,
+  trackUserInteractions: true,
+  trackResources: true,
+  trackLongTasks: true,
+  defaultPrivacyLevel: "mask-user-input",
+});
+
 function App() {
   const [data, setData] = useState({});
   const location = useLocation();
