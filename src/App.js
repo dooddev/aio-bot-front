@@ -7,6 +7,8 @@ import {
 } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
 import ReactGA from "react-ga4";
+import { datadogRum } from "@datadog/browser-rum";
+import { useDispatch } from "react-redux";
 import "./App.css";
 import "./assets/nucleo-icons.css";
 import Dashboard from "./components/chat/Dashboard";
@@ -20,18 +22,16 @@ import RecoveryPasswordPage from "./components/auth/recovery-password-page/Recov
 import HomePage from "./components/home/HomePage";
 import ResetPassword from "./components/auth/resest-password-page/ResetPasswordPage";
 import { getLocalStorage } from "./scripts/common/helpers/localStorage";
-import { useDispatch } from "react-redux";
 import { setTheme } from "./scripts/store/slices/app/app-slices";
 import InformPage from "./components/auth/inform-page/InformPage";
 import PrivateRoute from "./components/common/auth-redirect/PrivateRout";
 import { ContextSocketProvider } from "./scripts/context/SocketContext";
 import AcceptInvitation from "./components/chat/AcceptInvitation";
+
 export const DataContext = createContext();
 
 const TRACKING_ID = "G-WCSG6BH638";
 ReactGA.initialize(TRACKING_ID);
-
-import { datadogRum } from "@datadog/browser-rum";
 
 datadogRum.init({
   applicationId: "7d3628c1-a4a0-4a22-8461-0d896ccd7147",
